@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightGreen"
+    android:fitsSystemWindows="false"
+    tools:context=".RegisterActivity">
+
+
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_marginLeft="-180dp"
+        android:layout_marginTop="-120dp"
+        android:alpha="0.1"
+        android:src="@drawable/adnm_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:alpha="0.1"
+        android:src="@drawable/adnm_logo"
+        android:layout_marginRight="-180dp"
+        android:layout_marginBottom="-120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="30dp">
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/splash_logo"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <RadioGroup
+                android:id="@+id/user_role_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_feilds">
+                <RadioButton
+                    android:id="@+id/reporter_radio_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_person"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/green"
+                    android:text="@string/role_reporter"
+                    android:textSize="18sp"/>
+
+                <RadioButton
+                    android:id="@+id/collector_radio_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/role_collector"
+                    android:drawableStart="@drawable/ic_collector"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/green"
+                    android:textSize="18sp"/>
+
+            </RadioGroup>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <EditText
+                android:id="@+id/last_name_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/last_name"
+                android:background="@drawable/shape_feilds"
+                android:inputType="textPersonName"
+                android:textSize="18sp"
+                android:drawableStart="@drawable/ic_name"
+                android:drawableTint="@color/green"
+                android:drawablePadding="10dp"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <EditText
+                android:id="@+id/name_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name"
+                android:background="@drawable/shape_feilds"
+                android:inputType="textPersonName"
+                android:textSize="18sp"
+                android:drawableStart="@drawable/ic_name"
+                android:drawableTint="@color/green"
+                android:drawablePadding="10dp"/>
+
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <EditText
+                android:id="@+id/phone_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/phone_number"
+                android:background="@drawable/shape_feilds"
+                android:inputType="phone"
+                android:textSize="18sp"
+                android:drawableStart="@drawable/ic_phone"
+                android:drawableTint="@color/green"
+                android:drawablePadding="10dp"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <EditText
+                android:id="@+id/email_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:background="@drawable/shape_feilds"
+                android:inputType="textEmailAddress"
+                android:textSize="18sp"
+                android:drawableStart="@drawable/ic_email"
+                android:drawableTint="@color/green"
+                android:drawablePadding="10dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <EditText
+                android:id="@+id/password_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:background="@drawable/shape_feilds"
+                android:inputType="textPassword"
+                android:textSize="18sp"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawableTint="@color/green"
+                android:drawablePadding="10dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <EditText
+                android:id="@+id/confirm_password_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirm_password"
+                android:background="@drawable/shape_feilds"
+                android:inputType="textPassword"
+                android:textSize="18sp"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawableTint="@color/green"
+                android:drawablePadding="10dp"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:id="@+id/recaptcha_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/recaptcha_background">
+
+                <CheckBox
+                    android:id="@+id/recaptcha_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"/>
+
+                <ProgressBar
+                    android:id="@+id/recaptcha_progressbar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="gone"/>
+
+
+                <ImageView
+                    android:id="@+id/error_ic"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_error"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/i_m_not_a_robot"
+                    android:textColor="@android:color/black"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="16sp"/>
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_recaptcha"
+                    android:contentDescription="@string/recaptcha_logo" />
+
+            </LinearLayout>
+
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/register_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/register"
+                android:background="@drawable/btn_primary"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginHorizontal="20dp"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cancel_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:background="@drawable/btn_danger"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginHorizontal="20dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:padding="5dp"
+        android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackground"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

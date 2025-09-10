@@ -1,0 +1,181 @@
+<resources>
+    <string name="app_name">ADNM</string>
+
+    <string name="google_maps_key" translatable="false">AIzaSyA_IfgUJXSGbxG4A3lj0gVjS-RKz_xvT9E</string>
+    <string name="recaptcha_site_key" translatable="false">6LdJ9LQrAAAAADlxoYGLqpSJ6M5vwOsjqtdiFLwC</string>
+
+    <string name="give_me_waste_i_give_you_money">Give me waste I give you money</string>
+
+    <string name="email">email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="full_name">Full name</string>
+    <string name="register">Register</string>
+    <string name="name">Name</string>
+    <string name="last_name">Last name</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="report">Report</string>
+    <string name="reports">Reports</string>
+    <string name="price_per_kg">Price per Kg: %1$s</string>
+    <string name="total_price">Total Price: %1$.2f</string>
+    <string name="da">DA</string>
+    <string name="ok">OK</string>
+    <string name="report_information">Report Information</string>
+    <string name="map">Map</string>
+
+
+    <string-array name="type">
+        <item>collector</item>
+        <item>reporter</item>
+    </string-array>
+
+    <string-array name="waste_types_array">
+        <item>Plastic</item>
+        <item>Aluminium</item>
+        <item>Metal</item>
+        <item>Paper</item>
+        <item>Carton</item>
+        <item>Bread</item>
+    </string-array>
+
+    <!-- Roles -->
+    <string name="role_reporter">reporter</string>
+    <string name="role_collector">collector</string>
+
+    <!-- Errors & messages -->
+    <string name="passwords_do_not_match">Passwords do not match!</string>
+    <string name="error_message">Error: %1$s</string>
+    <string name="error">Error</string>
+
+    <!-- Dialog titles -->
+    <string name="report_title">Report #%1$d</string>
+    <string name="report_message">Weight: %1$.2f kg\nStatus: %2$s</string>
+
+    <!-- Status values -->
+    <string name="status_accepted">accepted</string>
+    <string name="status_in_progress">in_progress</string>
+    <string name="status_collected">collected</string>
+
+    <!-- Buttons -->
+    <string name="start_collecting">Start Collecting</string>
+    <string name="collected">Collected</string>
+    <string name="close">Close</string>
+
+    <!-- Messages -->
+    <string name="update_success">%1$s to %2$s</string>
+    <string name="update_failed">Failed to update status</string>
+
+    <!-- Notifications -->
+    <string name="default_report_title">Report</string>
+    <string name="default_report_body">New report</string>
+    <string name="collector_title">Collector</string>
+    <string name="collector_message">Report ID: %1$s</string>
+    <string name="user_title">User</string>
+    <string name="user_message">Report Status updated\nStatus: %1$s</string>
+    <string name="channel_name">App Notifications</string>
+
+    <string name="add_report">Add Report</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="enable_gps">Please enable your GPS</string>
+    <string name="fill_all_fields">Please fill all fields</string>
+    <string name="select_waste_type">Please select at least one waste type</string>
+    <string name="failed">Failed</string>
+    <string name="report_added_success">Report added successfully</string>
+    <string name="report_added_successfully">Report added successfully</string>
+
+
+    <!-- Waste types -->
+    <string name="waste_plastic">Plastic</string>
+    <string name="waste_aluminium">Aluminium</string>
+    <string name="waste_metal">Metal</string>
+    <string name="waste_paper">Paper</string>
+    <string name="waste_carton">Carton</string>
+    <string name="unknown">Unknown</string>
+
+    <!-- Errors -->
+    <string name="parsing_error">Parsing error: %1$s</string>
+    <string name="error_prefix">Error: %1$s</string>
+
+    <string name="notification_permission_granted">Notification permission granted</string>
+    <string name="permissions_denied">Some permissions denied</string>
+    <string name="couldnt_get_location">Couldn\'t get location</string>
+    <string name="failed_to_load_reports">Failed to load reports</string>
+    <string name="failed_to_draw_route">Failed to draw route</string>
+    <string name="report_snippet">Weight: %1$.2fkg</string>
+
+    <!-- Dialog tags -->
+    <string name="report_info_dialog">report info dialog</string>
+    <string name="add_report_dialog">add report dialog</string>
+
+    <!-- Permissions -->
+    <string name="camera_permission_granted">Camera permission granted!</string>
+    <string name="permission_denied_permanently">Permission denied permanently. Go to settings.</string>
+    <string name="camera_permission_title">Camera Permission</string>
+    <string name="camera_permission_message">This app needs camera permission to capture photos. Please grant this permission to continue.</string>
+    <string name="camera_permission_denied">Camera permission denied</string>
+
+    <!-- Waste types -->
+    <string name="waste_unknown">Unknown</string>
+
+    <!-- Errors -->
+    <string name="fetch_error">Error: %1$s</string>
+
+    <string name="logout_title">Logout</string>
+    <string name="logout_message">Do you want to logout?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="logging_out">Logging out…</string>
+    <string name="logout_failed">Logout failed, try again!</string>
+
+    <string name="enable_gps_title">Enable GPS</string>
+    <string name="enable_gps_message">
+        This app needs access to your GPS to detect your current location.
+        Please enable GPS so we can provide accurate pickup and delivery services.
+    </string>
+    <string name="enable">Enable</string>
+
+    <string name="logging_in">Logging in…</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="error_parsing">Error parsing response</string>
+    <string name="fcm_token_failed">Fetching FCM registration token failed</string>
+    <string name="fcm_token_log">Token: %1$s</string>
+    <string name="subscribed_collectors">Subscribed to collectors topic</string>
+    <string name="unsubscribed_collectors">Unsubscribed from collectors topic</string>
+    <string name="token_sent">Token sent to server: %1$s</string>
+    <string name="error_sending_token">Error sending token to server: %1$s</string>
+    <string name="role_not_found">Role not found</string>
+
+    <string name="do_you_have_no_account">Do you have no account?</string>
+
+    <string name="price_per_kg_">Price per Kg: -</string>
+    <string name="weight_kg">Weight (kg)</string>
+    <string name="total_price_">Total Price: -</string>
+    <string name="total_price2">Total Price</string>
+    <string name="type">Type</string>
+    <string name="weight">Weight</string>
+    <string name="status">Status</string>
+    <string name="id">ID</string>
+    <string name="creation_date">Creation date</string>
+
+    <string name="please_wait">Please wait…</string>
+    <string name="phone_number">Phone number</string>
+    <string name="error_title">Error</string>
+    <string name="kg">Kg</string>
+
+    <string name="i_m_not_a_robot">I\'m not a robot</string>
+    <string name="verification_failed">Verification Failed</string>
+    <string name="recaptcha_logo" translatable="false">reCAPTCHA logo</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="by_using_the_application_you_agree_to_adhere_to">By using the application, you agree to adhere to</string>
+    <string name="i_have_read_and_agreed_to_the_conditions_of_the_service">I have read and agreed to the conditions of the service</string>
+    <string name="select_role_message">Are you Collector or Reporter?</string>
+    <string name="check_the_box_message">Please check the box to verify</string>
+    <string name="not_available">Not available</string>
+    <string name="waste_types">Waste Types</string>
+
+    <string name="please_enter_weight">Please enter weight for</string>
+    <string name="updated">Updated</string>
+
+
+</resources>

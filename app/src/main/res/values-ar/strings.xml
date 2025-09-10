@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ADNM</string>
+
+    <string name="give_me_waste_i_give_you_money">عطيني ديشي نعطيك مصروف</string>
+
+    <string name="email">البريد الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="full_name">الاسم الكامل</string>
+    <string name="register">تسجيل</string>
+    <string name="name">الاسم</string>
+    <string name="last_name">اللقب</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="report">بلاغ</string>
+    <string name="reports">البلاغات</string>
+    <string name="price_per_kg">السعر لكل كغ: %1$s</string>
+    <string name="total_price">السعر الإجمالي: %1$.2f</string>
+    <string name="da">دج</string>
+    <string name="ok">موافق</string>
+    <string name="report_information">معلومات البلاغ</string>
+    <string name="map">الخريطة</string>
+
+    <string-array name="type">
+        <item>جامع</item>
+        <item>مبلّغ</item>
+    </string-array>
+
+    <string-array name="waste_types_array">
+        <item>بلاستيك</item>
+        <item>ألمنيوم</item>
+        <item>معدن</item>
+        <item>ورق</item>
+        <item>كرتون</item>
+        <item>خبز</item>
+    </string-array>
+
+    <!-- Roles -->
+    <string name="role_reporter">مبلّغ</string>
+    <string name="role_collector">جامع</string>
+
+    <!-- Errors & messages -->
+    <string name="passwords_do_not_match">كلمتا المرور غير متطابقتين!</string>
+    <string name="error_message">خطأ: %1$s</string>
+
+    <!-- Dialog titles -->
+    <string name="report_title">بلاغ #%1$d</string>
+    <string name="report_message">الوزن: %1$.2f كغ\nالحالة: %2$s</string>
+
+    <!-- Status values -->
+    <string name="status_accepted">مقبول</string>
+    <string name="status_in_progress">قيد التنفيذ</string>
+    <string name="status_collected">تم الجمع</string>
+
+    <!-- Buttons -->
+    <string name="start_collecting">ابدأ الجمع</string>
+    <string name="collected">تم الجمع</string>
+    <string name="close">إغلاق</string>
+
+    <!-- Messages -->
+    <string name="update_success">%1$s إلى %2$s</string>
+    <string name="update_failed">فشل في تحديث الحالة</string>
+
+    <!-- Notifications -->
+    <string name="default_report_title">بلاغ</string>
+    <string name="default_report_body">بلاغ جديد</string>
+    <string name="collector_title">جامع</string>
+    <string name="collector_message">معرّف البلاغ: %1$s</string>
+    <string name="user_title">مستخدم</string>
+    <string name="user_message">تم تحديث حالة البلاغ\nالحالة: %1$s</string>
+    <string name="channel_name">إشعارات التطبيق</string>
+
+    <string name="add_report">إضافة بلاغ</string>
+    <string name="submit">إرسال</string>
+    <string name="cancel">إلغاء</string>
+    <string name="enable_gps">يرجى تفعيل GPS</string>
+    <string name="fill_all_fields">يرجى ملء جميع الحقول</string>
+    <string name="select_waste_type">الرجاء تحديد نوع واحد على الأقل من النفايات</string>
+    <string name="failed">فشل</string>
+    <string name="report_added_success">تمت إضافة البلاغ بنجاح</string>
+    <string name="report_added_successfully">تمت إضافة البلاغ بنجاح</string>
+
+    <!-- Waste types -->
+    <string name="waste_plastic">بلاستيك</string>
+    <string name="waste_aluminium">ألمنيوم</string>
+    <string name="waste_metal">معدن</string>
+    <string name="waste_paper">ورق</string>
+    <string name="waste_carton">كرتون</string>
+    <string name="unknown">غير معروف</string>
+
+    <!-- Errors -->
+    <string name="parsing_error">خطأ في التحليل: %1$s</string>
+    <string name="error_prefix">خطأ: %1$s</string>
+    <string name="error">خطأ</string>
+
+    <string name="notification_permission_granted">تم منح إذن الإشعارات</string>
+    <string name="permissions_denied">تم رفض بعض الأذونات</string>
+    <string name="couldnt_get_location">تعذّر الحصول على الموقع</string>
+    <string name="failed_to_load_reports">فشل في تحميل البلاغات</string>
+    <string name="failed_to_draw_route">فشل في رسم المسار</string>
+    <string name="report_snippet">الوزن: %1$.2f كغ</string>
+
+    <!-- Dialog tags -->
+    <string name="report_info_dialog">مربع حوار معلومات البلاغ</string>
+    <string name="add_report_dialog">مربع حوار إضافة بلاغ</string>
+
+    <!-- Permissions -->
+    <string name="camera_permission_granted">تم منح إذن الكاميرا!</string>
+    <string name="permission_denied_permanently">تم رفض الإذن بشكل دائم. اذهب إلى الإعدادات.</string>
+    <string name="camera_permission_title">إذن الكاميرا</string>
+    <string name="camera_permission_message">هذا التطبيق يحتاج إلى إذن الكاميرا لالتقاط الصور. يرجى منح هذا الإذن للمتابعة.</string>
+    <string name="camera_permission_denied">تم رفض إذن الكاميرا</string>
+
+    <!-- Waste types -->
+    <string name="waste_unknown">غير معروف</string>
+
+    <!-- Errors -->
+    <string name="fetch_error">خطأ: %1$s</string>
+
+    <string name="logout_title">تسجيل الخروج</string>
+    <string name="logout_message">هل تريد تسجيل الخروج؟</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="logging_out">جارٍ تسجيل الخروج…</string>
+    <string name="logout_failed">فشل تسجيل الخروج، حاول مرة أخرى!</string>
+
+    <string name="enable_gps_title">تفعيل GPS</string>
+    <string name="enable_gps_message">
+        يحتاج هذا التطبيق إلى الوصول إلى GPS لاكتشاف موقعك الحالي.
+        يرجى تفعيل GPS حتى نتمكن من تقديم خدمات الالتقاط والتسليم بدقة.
+    </string>
+    <string name="enable">تفعيل</string>
+
+    <string name="logging_in">جارٍ تسجيل الدخول…</string>
+    <string name="invalid_credentials">بيانات الدخول غير صحيحة</string>
+    <string name="error_parsing">خطأ في تحليل الاستجابة</string>
+    <string name="fcm_token_failed">فشل في جلب رمز تسجيل FCM</string>
+    <string name="fcm_token_log">الرمز: %1$s</string>
+    <string name="subscribed_collectors">تم الاشتراك في موضوع الجامعين</string>
+    <string name="unsubscribed_collectors">تم إلغاء الاشتراك من موضوع الجامعين</string>
+    <string name="token_sent">تم إرسال الرمز إلى الخادم: %1$s</string>
+    <string name="error_sending_token">خطأ في إرسال الرمز إلى الخادم: %1$s</string>
+    <string name="role_not_found">لم يتم العثور على الدور</string>
+
+    <string name="do_you_have_no_account">ليس لديك حساب؟</string>
+
+    <string name="price_per_kg_">السعر لكل كغ: -</string>
+    <string name="weight_kg">الوزن (كغ)</string>
+    <string name="total_price_">السعر الإجمالي: -</string>
+    <string name="total_price2">السعر الإجمالي</string>
+    <string name="type">النوع</string>
+    <string name="id">المعرف</string>
+    <string name="weight">الوزن</string>
+    <string name="status">الحالة</string>
+    <string name="creation_date">تاريخ الإنشاء</string>
+
+
+    <string name="please_wait">انتظر من فضلك…</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="error_title">خطأ</string>
+    <string name="kg">كغ</string>
+
+
+    <string name="i_m_not_a_robot">لستُ برنامجًا آليًا</string>
+    <string name="verification_failed">فشل التحقق</string>
+
+
+    <string name="terms_and_conditions">الشروط والأحكام </string>
+    <string name="by_using_the_application_you_agree_to_adhere_to">باستخدام التطبيق ، فأنت توافق على الالتزام بـ</string>
+    <string name="i_have_read_and_agreed_to_the_conditions_of_the_service">لقد قرأت ووافقت على شروط الخدمة</string>
+    <string name="select_role_message">هل أنت جامع أو مُبلّغ؟</string>
+    <string name="check_the_box_message">يرجى الضغط على المربع للتحقق</string>
+    <string name="not_available">غير متوفر</string>
+    <string name="waste_types">انواع النفايات</string>
+
+
+    <string name="please_enter_weight">الرجاء إدخال وزن </string>
+    <string name="updated">تم التحديث</string>
+
+</resources>

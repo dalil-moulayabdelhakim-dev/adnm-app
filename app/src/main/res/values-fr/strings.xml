@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ADNM</string>
+
+    <string name="give_me_waste_i_give_you_money">Donnez-moi un deché, je vous donne de l\'argent</string>
+
+    <string name="email">E-mail</string>
+    <string name="password">Mot de passe</string>
+    <string name="login">Connexion</string>
+    <string name="full_name">Nom complet</string>
+    <string name="register">S’inscrire</string>
+    <string name="name">Prénom</string>
+    <string name="last_name">Nom</string>
+    <string name="confirm_password">Confirmer le mot de passe</string>
+    <string name="report">Rapport</string>
+    <string name="reports">Rapports</string>
+    <string name="price_per_kg">Prix par Kg : %1$s</string>
+    <string name="total_price">Prix total : %1$.2f</string>
+    <string name="da">DA</string>
+    <string name="ok">OK</string>
+    <string name="report_information">Informations du rapport</string>
+    <string name="map">Carte</string>
+
+    <string-array name="type">
+        <item>collecteur</item>
+        <item>rapporteur</item>
+    </string-array>
+
+    <string-array name="waste_types_array">
+        <item>Plastique</item>
+        <item>Aluminium</item>
+        <item>Métal</item>
+        <item>Papier</item>
+        <item>Carton</item>
+        <item>Pain</item>
+    </string-array>
+
+    <!-- Roles -->
+    <string name="role_reporter">rapporteur</string>
+    <string name="role_collector">collecteur</string>
+
+    <!-- Errors & messages -->
+    <string name="passwords_do_not_match">Les mots de passe ne correspondent pas !</string>
+    <string name="error_message">Erreur : %1$s</string>
+
+    <!-- Dialog titles -->
+    <string name="report_title">Rapport n°%1$d</string>
+    <string name="report_message">Poids : %1$.2f kg\nStatut : %2$s</string>
+
+    <!-- Status values -->
+    <string name="status_accepted">accepté</string>
+    <string name="status_in_progress">en cours</string>
+    <string name="status_collected">collecté</string>
+
+    <!-- Buttons -->
+    <string name="start_collecting">Commencer la collecte</string>
+    <string name="collected">Collecté</string>
+    <string name="close">Fermer</string>
+
+    <!-- Messages -->
+    <string name="update_success">%1$s vers %2$s</string>
+    <string name="update_failed">Échec de la mise à jour du statut</string>
+
+    <!-- Notifications -->
+    <string name="default_report_title">Rapport</string>
+    <string name="default_report_body">Nouveau rapport</string>
+    <string name="collector_title">Collecteur</string>
+    <string name="collector_message">ID du rapport : %1$s</string>
+    <string name="user_title">Utilisateur</string>
+    <string name="user_message">Statut du rapport mis à jour\nStatut : %1$s</string>
+    <string name="channel_name">Notifications de l’application</string>
+
+    <string name="add_report">Ajouter un rapport</string>
+    <string name="submit">Soumettre</string>
+    <string name="cancel">Annuler</string>
+    <string name="enable_gps">Veuillez activer votre GPS</string>
+    <string name="fill_all_fields">Veuillez remplir tous les champs</string>
+    <string name="select_waste_type">Veuillez sélectionner au moins un type de déchet</string>
+    <string name="failed">Échoué</string>
+    <string name="report_added_success">Rapport ajouté avec succès</string>
+    <string name="report_added_successfully">Rapport ajouté avec succès</string>
+
+    <!-- Waste types -->
+    <string name="waste_plastic">Plastique</string>
+    <string name="waste_aluminium">Aluminium</string>
+    <string name="waste_metal">Métal</string>
+    <string name="waste_paper">Papier</string>
+    <string name="waste_carton">Carton</string>
+    <string name="unknown">Inconnu</string>
+
+    <!-- Errors -->
+    <string name="parsing_error">Erreur d’analyse : %1$s</string>
+    <string name="error_prefix">Erreur : %1$s</string>
+    <string name="error">Erreur</string>
+
+    <string name="notification_permission_granted">Autorisation de notification accordée</string>
+    <string name="permissions_denied">Certaines autorisations refusées</string>
+    <string name="couldnt_get_location">Impossible d’obtenir la localisation</string>
+    <string name="failed_to_load_reports">Échec du chargement des rapports</string>
+    <string name="failed_to_draw_route">Échec du tracé de l’itinéraire</string>
+    <string name="report_snippet">Poids : %1$.2fkg</string>
+
+    <!-- Dialog tags -->
+    <string name="report_info_dialog">boîte de dialogue info rapport</string>
+    <string name="add_report_dialog">boîte de dialogue ajout rapport</string>
+
+    <!-- Permissions -->
+    <string name="camera_permission_granted">Autorisation de caméra accordée !</string>
+    <string name="permission_denied_permanently">Autorisation refusée définitivement. Allez dans les paramètres.</string>
+    <string name="camera_permission_title">Autorisation de la caméra</string>
+    <string name="camera_permission_message">Cette application a besoin de l’autorisation de la caméra pour capturer des photos. Veuillez accorder cette autorisation pour continuer.</string>
+    <string name="camera_permission_denied">Autorisation de la caméra refusée</string>
+
+    <!-- Waste types -->
+    <string name="waste_unknown">Inconnu</string>
+
+    <!-- Errors -->
+    <string name="fetch_error">Erreur : %1$s</string>
+
+    <string name="logout_title">Déconnexion</string>
+    <string name="logout_message">Voulez-vous vous déconnecter ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="logging_out">Déconnexion…</string>
+    <string name="logout_failed">Échec de la déconnexion, réessayez !</string>
+
+    <string name="enable_gps_title">Activer le GPS</string>
+    <string name="enable_gps_message">
+        Cette application a besoin d’accéder à votre GPS pour détecter votre position actuelle.
+        Veuillez activer le GPS afin que nous puissions fournir des services précis de collecte et de livraison.
+    </string>
+    <string name="enable">Activer</string>
+
+    <string name="logging_in">Connexion…</string>
+    <string name="invalid_credentials">Identifiants invalides</string>
+    <string name="error_parsing">Erreur lors de l’analyse de la réponse</string>
+    <string name="fcm_token_failed">Échec de la récupération du jeton FCM</string>
+    <string name="fcm_token_log">Jeton : %1$s</string>
+    <string name="subscribed_collectors">Abonné au topic collecteurs</string>
+    <string name="unsubscribed_collectors">Désabonné du topic collecteurs</string>
+    <string name="token_sent">Jeton envoyé au serveur : %1$s</string>
+    <string name="error_sending_token">Erreur lors de l’envoi du jeton au serveur : %1$s</string>
+    <string name="role_not_found">Rôle introuvable</string>
+
+    <string name="do_you_have_no_account">Vous n’avez pas de compte ?</string>
+
+    <string name="price_per_kg_">Prix par Kg : -</string>
+    <string name="weight_kg">Poids (kg)</string>
+    <string name="total_price_">Prix total : -</string>
+    <string name="total_price2">Prix total</string>
+    <string name="type">Type</string>
+    <string name="weight">Poids</string>
+    <string name="status">Statut</string>
+    <string name="id">ID</string>
+    <string name="creation_date">Date de création</string>
+
+
+    <string name="please_wait">S\'il vous plaît, attendez…</string>
+    <string name="phone_number">Numéro de téléphone</string>
+    <string name="error_title">Erreur</string>
+    <string name="kg">Kg</string>
+
+    <string name="i_m_not_a_robot">Je ne suis pas un robot</string>
+    <string name="verification_failed">Échec de la vérification</string>
+
+
+    <string name="terms_and_conditions">Termes et conditions</string>
+    <string name="by_using_the_application_you_agree_to_adhere_to">En utilisant l\'application, vous acceptez d\'adhérer à</string>
+    <string name="i_have_read_and_agreed_to_the_conditions_of_the_service">J\'ai lu et accepté les conditions du service</string>
+    <string name="select_role_message">Êtes-vous collectionneur ou journaliste ?</string>
+    <string name="check_the_box_message">Veuillez cocher la case pour vérifier</string>
+    <string name="not_available">Not available</string>
+    <string name="waste_types">Les types de deche</string>
+
+
+    <string name="please_enter_weight">Veuillez entrer le poids pour</string>
+    <string name="updated">Mis à jour</string>
+</resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/by_using_the_application_you_agree_to_adhere_to"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:textSize="16sp"
+        android:paddingBottom="12dp" />
+    <TextView
+        android:id="@+id/tvTermsLink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/terms_and_conditions"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:textSize="16sp"
+        android:textColor="@color/green"
+        android:paddingBottom="12dp" />
+
+    <CheckBox
+        android:id="@+id/cbAgree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/i_have_read_and_agreed_to_the_conditions_of_the_service"
+        android:textSize="16sp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:enabled="false"
+            android:textSize="16sp" />
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancel_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_out_primary"
+            android:text="@string/cancel"/>
+    </LinearLayout>
+
+
+</LinearLayout>
