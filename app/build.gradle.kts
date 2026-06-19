@@ -12,8 +12,8 @@ android {
         applicationId = "com.dldevalopement.adnm"
         minSdk = 26
         targetSdk = 35
-        versionCode = 6
-        versionName = "4.1"
+        versionCode = 8
+        versionName = "4.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.play.services.location)
+    implementation(libs.play.services.maps)
     implementation(libs.firebase.messaging)
     implementation(libs.transport.api)
     testImplementation(libs.junit)
@@ -60,9 +61,6 @@ dependencies {
 
     implementation("com.android.volley:volley:1.2.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
-
-    implementation ("com.google.android.gms:play-services-maps:18.2.0")
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
 
     implementation ("com.google.android.gms:play-services-safetynet:18.1.0")
 

@@ -196,4 +196,19 @@
     <string name="update_failed_app">فشل الوصول إلى روابط التحديث</string>
     <string name="role_not_found">لم يتم العثور على دور المستخدم</string>
 
+    <!-- Profile Activity -->
+    <string name="profile">الملف الشخصي</string>
+    <string name="phone">الهاتف</string>
+    <string name="user_type">نوع المستخدم</string>
+    <string name="delete_account">حذف الحساب</string>
+    <string name="delete_account_confirm_title">حذف الحساب؟</string>
+    <string name="delete_account_confirm_message">هل أنت متأكد من أنك تريد حذف حسابك نهائيًا؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="account_deleted_success">تم حذف الحساب بنجاح.</string>
+    <string name="loading_profile">جارٍ تحميل الملف الشخصي…</string>
+    <string name="deleting_account">جارٍ حذف الحساب…</string>
+
+    <string name="no_reports_yet">لا توجد بلاغات بعد</string>
+    <string name="lets_create_first_report">لنقم بإنشاء أول بلاغ لك!</string>
+    <string name="connection_error">خطأ في الاتصال</string>
+
 </resources>

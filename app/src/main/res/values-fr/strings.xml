@@ -194,4 +194,19 @@
     <string name="update_failed_app">Échec de l\'accès aux liens de mise à jour</string>
     <string name="role_not_found">Rôle d\'utilisateur non trouvé</string>
 
+    <!-- Profile Activity -->
+    <string name="profile">Profil</string>
+    <string name="phone">Téléphone</string>
+    <string name="user_type">Type d\'utilisateur</string>
+    <string name="delete_account">Supprimer le compte</string>
+    <string name="delete_account_confirm_title">Supprimer le compte ?</string>
+    <string name="delete_account_confirm_message">Êtes-vous sûr de vouloir supprimer définitivement votre compte ? Cette action est irréversible.</string>
+    <string name="account_deleted_success">Compte supprimé avec succès.</string>
+    <string name="loading_profile">Chargement du profil…</string>
+    <string name="deleting_account">Suppression du compte…</string>
+
+    <string name="no_reports_yet">Aucun rapport pour le moment</string>
+    <string name="lets_create_first_report">Créons votre premier rapport !</string>
+    <string name="connection_error">Erreur de connexion</string>
+
 </resources>

@@ -294,37 +294,55 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
-                // Construct the URL for the OSRM routing API
+                // Construct the URL for the OSRM routing API (using HTTPS and lon,lat format)
                 val url =
-                    "http://router.project-osrm.org/route/v1/driving/${location.longitude},${location.latitude};${lng},${lat}?overview=full&geometries=geojson"
+                    "https://router.project-osrm.org/route/v1/driving/${location.longitude},${location.latitude};${lng},${lat}?overview=full&geometries=geojson"
 
                 val request = object : StringRequest(Method.GET, url,
                     { response ->
-                        val json = JSONObject(response)
-                        val routes = json.getJSONArray("routes")
-                        if (routes.length() > 0) {
-                            val geometry = routes.getJSONObject(0).getJSONObject("geometry")
-                            val coords = geometry.getJSONArray("coordinates")
+                        try {
+                            val json = JSONObject(response)
+                            val routes = json.getJSONArray("routes")
+                            if (routes.length() > 0) {
+                                val geometry = routes.getJSONObject(0).getJSONObject("geometry")
+                                val coords = geometry.getJSONArray("coordinates")
 
-                            // Create a polyline to draw the route
-                            val polylineOptions =
-                                PolylineOptions().color(Color.BLUE).width(8f)
+                                // Create a polyline to draw the route
+                                val polylineOptions =
+                                    PolylineOptions().color(Color.BLUE).width(8f)
 
-                            // Add each coordinate to the polyline
-                            for (i in 0 until coords.length()) {
-                                val coord = coords.getJSONArray(i)
-                                val long = coord.getDouble(0)
-                                val lati = coord.getDouble(1)
-                                polylineOptions.add(LatLng(lati, long))
+                                // Add each coordinate to the polyline
+                                for (i in 0 until coords.length()) {
+                                    val coord = coords.getJSONArray(i)
+                                    val long = coord.getDouble(0)
+                                    val lati = coord.getDouble(1)
+                                    polylineOptions.add(LatLng(lati, long))
+                                }
+                                // Add the polyline to the map
+                                mMap.addPolyline(polylineOptions)
                             }
-                            // Add the polyline to the map
-                            mMap.addPolyline(polylineOptions)
+                        } catch (e: Exception) {
+                            Log.e("OSRM", "Error parsing routing response: ${e.message}")
                         }
                     },
                     { error ->
-                        // Handle routing API errors
-                        error.printStackTrace()
-                    }) {}
+                        // Handle routing API errors (like 400 NoRoute or 403 Forbidden)
+                        val response = error.networkResponse
+                        if (response != null && response.data != null) {
+                            val errorStr = String(response.data)
+                            Log.e("OSRM", "Status Code: ${response.statusCode}, Error: $errorStr")
+                            // 400 often means NoRoute (e.g. points are on different continents)
+                        } else {
+                            Log.e("OSRM", "Routing error: ${error.message}")
+                        }
+                    }) {
+                    override fun getHeaders(): MutableMap<String, String> {
+                        val headers = HashMap<String, String>()
+                        // OSRM demo server requires a User-Agent header
+                        headers["User-Agent"] = "ADNM-Android-App"
+                        return headers
+                    }
+                }
 
                 Volley.newRequestQueue(this).add(request)
             }

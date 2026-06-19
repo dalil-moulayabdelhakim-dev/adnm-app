@@ -76,82 +76,79 @@ class LoginActivity : AppCompatActivity() {
      * Attempts to log in the user by sending a network request to the server.
      */
     private fun loginUser() {
-        progressDialog.setMessage(getString(R.string.logging_in))
-        progressDialog.show()
         val email = binding.emailEditText.text.toString().trim()
         val password = binding.passwordEditText.text.toString().trim()
 
         // Validate user input
         if (email.isEmpty() || password.isEmpty()) {
-            progressDialog.dismiss()
             Toast.makeText(this, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show()
             return
         }
+
+        progressDialog.setMessage(getString(R.string.logging_in))
+        progressDialog.show()
 
         // Create a Volley POST request to the login endpoint
         val request = object : StringRequest(
             Method.POST, LOGIN_URL,
             { response ->
                 try {
-                    progressDialog.dismiss()
                     val jsonObject = JSONObject(response)
                     val success = jsonObject.getBoolean(SUCCESS)
                     if (success) {
-                        if (jsonObject.has("token")) {
-                            val token = jsonObject.getString("token")
-                            val role = jsonObject.getInt("role")
+                        if (jsonObject.has(TOKEN)) {
+                            val token = jsonObject.getString(TOKEN)
+                            val role = jsonObject.getInt(ROLE)
 
                             // Get the FCM token from Firebase
                             FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                                val fcmToken = if (task.isSuccessful) task.result else null
+                                
                                 if (!task.isSuccessful) {
                                     Log.w("FCM", getString(R.string.fcm_token_failed), task.exception)
-                                    return@addOnCompleteListener
                                 }
 
-                                val fcmToken = task.result
-                                Log.d("FCM", getString(R.string.fcm_token_log, fcmToken))
-
                                 // Manage FCM topic subscription based on user role
-                                if (role == 1) { // Admin role
+                                if (role == 1) { // Collector role
                                     FirebaseMessaging.getInstance().subscribeToTopic("collectors")
-                                        .addOnCompleteListener { task2 ->
-                                            if (task2.isSuccessful) {
-                                                Log.d("FCM", getString(R.string.subscribed_collectors))
-                                            }
+                                        .addOnCompleteListener {
+                                            progressDialog.dismiss()
+                                            loadPage(token, role)
                                         }
-                                    FirebaseMessaging.getInstance().deleteToken() // Admins don't receive individual push notifications, so we delete their FCM token to avoid misuse
-                                    loadPage(token, role)
                                 } else { // Reporter or other roles
                                     FirebaseMessaging.getInstance().unsubscribeFromTopic("collectors")
-                                        .addOnCompleteListener { task2 ->
-                                            if (task2.isSuccessful) {
-                                                Log.d("FCM", getString(R.string.unsubscribed_collectors))
-                                                // Send the FCM token to the server for targeted notifications
+                                        .addOnCompleteListener {
+                                            if (fcmToken != null) {
                                                 sendTokenToServer(fcmToken, token, role)
+                                            } else {
+                                                progressDialog.dismiss()
+                                                loadPage(token, role)
                                             }
                                         }
                                 }
                             }
                         } else {
+                            progressDialog.dismiss()
                             Toast.makeText(this, getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show()
                         }
                     } else {
+                        progressDialog.dismiss()
                         val message = getString(R.string.invalid_credentials)
-                        val dialog = AlertDialog.Builder(this, R.style.dialog)
+                        AlertDialog.Builder(this, R.style.dialog)
                             .setMessage(message)
                             .setPositiveButton(getString(R.string.ok)) { dialog, _ -> dialog.dismiss() }
-                            .create()
-                        dialog.show()
+                            .show()
                     }
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    Log.e("LOGIN", "Parsing error", e)
+                    progressDialog.dismiss()
                     Toast.makeText(this, getString(R.string.error_parsing), Toast.LENGTH_SHORT).show()
                 }
             },
             { error ->
                 progressDialog.dismiss()
                 error.printStackTrace()
-
+                Toast.makeText(this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show()
             }
         ) {
             // Add the email and password parameters to the request body
@@ -162,8 +159,7 @@ class LoginActivity : AppCompatActivity() {
                 return params
             }
         }
-        val queue = Volley.newRequestQueue(this)
-        queue.add(request)
+        Volley.newRequestQueue(this).add(request)
     }
 
     /**
@@ -176,36 +172,29 @@ class LoginActivity : AppCompatActivity() {
         val request = object : StringRequest(
             Method.POST, FCM_TOKEN_URL,
             { response ->
-                val jsonObject = JSONObject(response)
-                val success = jsonObject.getBoolean(SUCCESS)
-                if (success) {
-                    Log.d("FCM", getString(R.string.token_sent, response))
-                    loadPage(token, role)
-                } else {
-                    val message = jsonObject.getString(MESSAGE)
-                    val dialog = AlertDialog.Builder(this)
-                        .setMessage(message)
-                        .setPositiveButton(getString(R.string.ok)) { dialog, _ -> dialog.dismiss() }
-                        .create()
-                    dialog.show()
+                progressDialog.dismiss()
+                try {
+                    val jsonObject = JSONObject(response)
+                    val success = jsonObject.getBoolean(SUCCESS)
+                    if (success) {
+                        Log.d("FCM", getString(R.string.token_sent, response))
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
+                loadPage(token, role)
             },
             { error ->
+                progressDialog.dismiss()
                 Log.e("FCM", getString(R.string.error_sending_token, error.message ?: ""))
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle(getString(R.string.error_title))
-                builder.setMessage(getString(R.string.error_message, error.message ?: ""))
-                builder.setPositiveButton(getString(R.string.ok)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                val dialog = builder.create()
-                dialog.show()
+                // Proceed to load the page even if sending the FCM token fails
+                loadPage(token, role)
             }
         ) {
             // Add the FCM token as a parameter
             override fun getParams(): MutableMap<String, String> {
                 val params = HashMap<String, String>()
-                params[TOKEN] = fcmToken
+                params["fcm_token"] = fcmToken // Use explicit key to avoid conflict with auth TOKEN constant
                 return params
             }
             // Add the authorization header with the user's token
@@ -216,8 +205,7 @@ class LoginActivity : AppCompatActivity() {
                 return headers
             }
         }
-        val queue = Volley.newRequestQueue(this)
-        queue.add(request)
+        Volley.newRequestQueue(this).add(request)
     }
 
     /**
@@ -227,10 +215,10 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun loadPage(token: String, role: Int) {
         // Store the token and role in SharedPreferences
-        val sharedPreferences = getSharedPreferences(DATA, MODE_PRIVATE).edit()
-        sharedPreferences.putString(TOKEN, token)
-        sharedPreferences.putInt(ROLE, role)
-        sharedPreferences.apply()
+        val sharedPrefs = getSharedPreferences(DATA, MODE_PRIVATE).edit()
+        sharedPrefs.putString(TOKEN, token)
+        sharedPrefs.putInt(ROLE, role)
+        sharedPrefs.apply()
 
         // Redirect to the correct activity based on the role
         when (role) {
@@ -238,6 +226,6 @@ class LoginActivity : AppCompatActivity() {
             1 -> startActivity(Intent(this, CollectorActivity::class.java)) // Collector
             else -> Toast.makeText(this, getString(R.string.role_not_found), Toast.LENGTH_SHORT).show()
         }
-        finish() // Close the LoginActivity to prevent returning to it with the back button
+        finish()
     }
 }
