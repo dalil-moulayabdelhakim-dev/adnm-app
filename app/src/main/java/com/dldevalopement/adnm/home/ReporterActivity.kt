@@ -3,15 +3,21 @@ package com.dldevalopement.adnm.home
 // Import necessary Android classes and libraries
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.dldevalopement.adnm.PermissionHelper
+import com.dldevalopement.adnm.ProfileActivity
 import com.dldevalopement.adnm.R
 import com.dldevalopement.adnm.database.AUTHORIZATION
 import com.dldevalopement.adnm.database.BEARER
@@ -25,8 +31,6 @@ import com.dldevalopement.adnm.database.STATUS
 import com.dldevalopement.adnm.database.SUCCESS
 import com.dldevalopement.adnm.database.TOKEN
 import com.dldevalopement.adnm.database.TOTAL_PRICE
-import com.dldevalopement.adnm.database.WASTE_TYPE_ID
-import com.dldevalopement.adnm.database.WEIGHT
 import com.dldevalopement.adnm.databinding.ActivityReporterBinding
 import com.dldevalopement.adnm.home.reporter.dialog.AddReportDialogFragment
 import com.dldevalopement.adnm.home.reporter.RecyclerInterface
@@ -58,10 +62,17 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
         super.onCreate(savedInstanceState)
         // Inflate the layout using view binding and set it as the content view
         binding = ActivityReporterBinding.inflate(layoutInflater)
+        enableEdgeToEdge()
         setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
 
         // Request necessary permissions (e.g., notifications and location) from the user
-        PermissionHelper.requestNotificationAndLocation(this)
+        PermissionHelper.requestPermissions(this)
 
         // 🔹 RecyclerView setup
         // Initialize the reports adapter with a click listener for items
@@ -90,6 +101,12 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
             val dialog = AddReportDialogFragment(this)
             dialog.setReportStatusListener(this)
             dialog.show(supportFragmentManager, "add report dialog")
+        }
+
+        // Set up the profile button listener
+        binding.profileButton.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
 
         // Set up the logout button listener
@@ -176,14 +193,7 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
                         val jsonArray = jsonObject.getJSONArray(REPORTS)
                         for (i in 0 until jsonArray.length()) {
                             val obj = jsonArray.getJSONObject(i)
-                            // Get the array of waste types from resources
-                            val wasteTypes = resources.getStringArray(R.array.waste_types_array)
-
-                            // Create a map from integer ID to waste type string (starting from 1)
-                            val wasteTypeMap = wasteTypes.mapIndexed { index, type ->
-                                index + 1 to type
-                            }.toMap()
-
+                            
                             // Create a Report object from the JSON data
                             val report = Report(
                                 id = obj.getInt(ID),
@@ -199,6 +209,16 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
 
                         // 🔄 Update the RecyclerView adapter with the new data
                         reportsAdapter.updateReports(reports)
+                        
+                        // Show/Hide empty state
+                        if (reports.isEmpty()) {
+                            binding.emptyStateLayout.visibility = View.VISIBLE
+                            binding.reportsRecyclerView.visibility = View.GONE
+                        } else {
+                            binding.emptyStateLayout.visibility = View.GONE
+                            binding.reportsRecyclerView.visibility = View.VISIBLE
+                        }
+                        
                     }else{
                         // Handle the case where the server returns a "success: false" response
                         val message = jsonObject.getString(MESSAGE)
@@ -207,11 +227,14 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
                             .setPositiveButton(getString(R.string.ok)) { dialog, _ -> dialog.dismiss() }
                             .create()
                         dialog.show()
+                        
+                        binding.emptyStateLayout.visibility = View.VISIBLE
                     }
                 } catch (e: Exception) {
                     // Handle JSON parsing errors
                     e.printStackTrace()
                     Toast.makeText(this, getString(R.string.parsing_error, e.message), Toast.LENGTH_SHORT).show()
+                    binding.emptyStateLayout.visibility = View.VISIBLE
                 }
 
                 // Stop the swipe refresh animation
@@ -223,6 +246,10 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
 
                 // Stop the swipe refresh animation
                 binding.swipeRefreshLayout.isRefreshing = false
+                
+                if (reportsAdapter.itemCount == 0) {
+                    binding.emptyStateLayout.visibility = View.VISIBLE
+                }
             }
         ) {
             // Override getHeaders to add the authorization token

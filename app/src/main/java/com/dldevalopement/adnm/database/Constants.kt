@@ -14,10 +14,17 @@ const val RECAPTCHA_URL = "$URL/verify-recaptcha" // The base URL for recaptcha 
 
 const val TERMS_URL = "$HOST/terms"
 
+// ================= Update ==========================================
+
+
+const val CONFIG_URL = "$HOST/storage/app-settings-android.json"
+
 // ================= Auth (Authentication) Endpoints =================
 const val REGISTER_URL = "$URL/register" // Endpoint for user registration
 const val LOGIN_URL = "$URL/login" // Endpoint for user login
 const val LOGOUT_URL = "$URL/logout" // Endpoint for user logout
+const val PROFILE_URL = "$URL/profile" // Endpoint to get user profile
+const val DELETE_ACCOUNT_URL = "$URL/user/delete" // Endpoint to delete user account
 const val FCM_TOKEN_URL = "$URL/fcm/token" // Endpoint for updating Firebase Cloud Messaging token
 
 // ================= Reporter (المبلِّغ) Endpoints =================
@@ -61,6 +68,7 @@ const val ADMIN_WEEKLY_SUMMARY_URL = "$URL/admin/waste-types/weekly-summary" // 
 // or as keys for storing data locally (e.g., in SharedPreferences).
 
 // 👤 User Keys
+const val USER = "user"
 const val NAME = "name"
 const val LAST_NAME = "last_name"
 const val EMAIL = "email"
@@ -84,6 +92,9 @@ const val TOKEN = "token"
 const val AUTHORIZATION = "Authorization"
 const val BEARER = "Bearer"
 const val TYPE = "type"
+const val TYPE_EN = "type_en"
+const val TYPE_AR = "type_ar"
+const val TYPE_FR = "type_fr"
 const val TOTAL_PRICE = "total_price"
 const val CREATED_AT = "created_at"
 const val ROLE = "role"

@@ -140,7 +140,6 @@
     <string name="unsubscribed_collectors">Désabonné du topic collecteurs</string>
     <string name="token_sent">Jeton envoyé au serveur : %1$s</string>
     <string name="error_sending_token">Erreur lors de l’envoi du jeton au serveur : %1$s</string>
-    <string name="role_not_found">Rôle introuvable</string>
 
     <string name="do_you_have_no_account">Vous n’avez pas de compte ?</string>
 
@@ -175,4 +174,24 @@
 
     <string name="please_enter_weight">Veuillez entrer le poids pour</string>
     <string name="updated">Mis à jour</string>
+
+        <string name="select_waste_types">Sélectionnez les types de déchets :</string>
+
+
+    <string name="da_per_kg">DA/Kg</string>
+    <string name="image_captured_success">La photo a été prise avec succès.</string>
+    <string name="image_captured"> La photo a été prise"</string>
+    <string name="please_take_a_picture_for_each_waste_type">Veuillez prendre une photo pour chaque type de déchet !</string>
+    <string name="signup">S\'inscrire</string>
+
+    <string name="update_required_title">Mise à jour obligatoire</string>
+    <string name="update_available_title">Nouvelle mise à jour</string>
+    <string name="default_update_message">Une nouvelle mise à jour est disponible pour l\'application.</string>
+    <string name="update_now">Mettre à jour</string>
+    <string name="exit_app">Quitter</string>
+    <string name="later">Plus tard</string>
+    <string name="play_store_not_found">Play Store non disponible, téléchargement depuis le serveur...</string>
+    <string name="update_failed_app">Échec de l\'accès aux liens de mise à jour</string>
+    <string name="role_not_found">Rôle d\'utilisateur non trouvé</string>
+
 </resources>

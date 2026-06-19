@@ -24,44 +24,30 @@ object PermissionHelper {
      *
      * @param activity The Activity context from which to request the permissions.
      */
-    fun requestNotificationAndLocation(activity: Activity) {
-        // Check if the device is running Android 13 (API 33) or higher
+    fun requestPermissions(activity: Activity) {
+        // قائمة الأذونات الأساسية المطلوبة لجميع الإصدارات
+        val permissions = mutableListOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.CAMERA
+        )
+
+        // إضافة إذن الإشعارات فقط إذا كان الإصدار أندرويد 13 (API 33) أو أعلى
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Check if either POST_NOTIFICATIONS or ACCESS_FINE_LOCATION permission is not granted
-            if (ActivityCompat.checkSelfPermission(
-                    activity,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(
-                    activity,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // Request both permissions from the user
-                ActivityCompat.requestPermissions(
-                    activity,
-                    arrayOf(
-                        Manifest.permission.POST_NOTIFICATIONS,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ),
-                    REQUEST_NOTIFICATION_PERMISSION
-                )
-            }
-        } else {
-            // For Android versions below 13, POST_NOTIFICATIONS permission is not required
-            // Check if ACCESS_FINE_LOCATION permission is not granted
-            if (ActivityCompat.checkSelfPermission(
-                    activity,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // Request only the ACCESS_FINE_LOCATION permission
-                ActivityCompat.requestPermissions(
-                    activity,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_NOTIFICATION_PERMISSION
-                )
-            }
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        // فحص الأذونات: هل هناك إذن واحد على الأقل غير ممنوح؟
+        val permissionsToRequest = permissions.filter {
+            ActivityCompat.checkSelfPermission(activity, it) != PackageManager.PERMISSION_GRANTED
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            // طلب الأذونات غير الممنوحة فقط
+            ActivityCompat.requestPermissions(
+                activity,
+                permissionsToRequest.toTypedArray(),
+                REQUEST_NOTIFICATION_PERMISSION
+            )
         }
     }
 }

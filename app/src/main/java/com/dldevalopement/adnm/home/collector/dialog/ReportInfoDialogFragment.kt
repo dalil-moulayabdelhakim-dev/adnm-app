@@ -123,64 +123,79 @@ class ReportInfoDialogFragment(
         return builder.create()
     }
 
+    // Function to collect entered weights and create a JSON array
     private fun collectWeights(): JSONArray? {
         val wastesArray = JSONArray()
 
+        // Loop through each waste type
         for (i in wasteTypesID.indices) {
             val id = wasteTypesID[i]
             val type = wasteTypes[i]
             val input = weightInputs[type]
             val value = input?.text.toString().trim()
 
+            // Check if weight input is empty
             if (value.isEmpty()) {
                 Toast.makeText(context, "${context.getString(R.string.please_enter_weight)} $type", Toast.LENGTH_SHORT).show()
                 return null
             }
 
+            // Create a JSON object for the current waste
             val wasteObj = JSONObject()
             wasteObj.put("id", id)
             wasteObj.put("weight", value.toDouble())
             wastesArray.put(wasteObj)
         }
 
+        // Return the final array of wastes
         return wastesArray
     }
 
+    // Function to update the report status with new status and waste data
     private fun updateReportStatus(id: Int, newStatus: String, wastes: JSONArray?) {
         val url = COLLECTOR_UPDATE_STATUS_URL
 
+        // Create the request body
         val body = JSONObject().apply {
             put("report_id", id)
             put("status", newStatus)
             put("wastes", wastes ?: JSONArray())
         }
 
+        // Create a POST request using Volley
         val request = object : JsonObjectRequest(
             Method.POST, url, body,
             Response.Listener { response ->
                 try {
+                    // Parse the response
                     val success = response.getBoolean(SUCCESS)
                     val message = response.getString(MESSAGE)
+
                     if (success) {
+                        // If success, show confirmation and notify listener
                         Toast.makeText(context, "${context.getString(R.string.updated)}: $message", Toast.LENGTH_SHORT).show()
                         listener?.onReportStatusChanged()
                     } else {
+                        // If failed, show alert dialog with the error message
                         AlertDialog.Builder(context)
                             .setMessage(message)
                             .setPositiveButton(context.getString(R.string.ok)) { d, _ -> d.dismiss() }
                             .show()
                     }
                 } catch (e: Exception) {
+                    // Handle parsing exceptions
                     e.printStackTrace()
                     Toast.makeText(context, context.getString(R.string.parsing_error), Toast.LENGTH_SHORT).show()
                 }
                 dismiss()
             },
             Response.ErrorListener { error ->
+                // Handle request errors
                 error.printStackTrace()
                 dismiss()
             }
         ) {
+            // Add headers (including authentication token)
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 val sharedPreferences = requireActivity()
@@ -193,12 +208,10 @@ class ReportInfoDialogFragment(
             }
         }
 
+        // Add request to the queue
         Volley.newRequestQueue(requireContext()).add(request)
     }
 
-    override fun onDestroyView() {
-        listener = null
-        super.onDestroyView()
-    }
+
 
 }

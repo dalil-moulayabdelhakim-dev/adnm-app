@@ -6,7 +6,7 @@
 
     <string name="give_me_waste_i_give_you_money">Give me waste I give you money</string>
 
-    <string name="email">email</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="full_name">Full name</string>
@@ -144,7 +144,6 @@
     <string name="unsubscribed_collectors">Unsubscribed from collectors topic</string>
     <string name="token_sent">Token sent to server: %1$s</string>
     <string name="error_sending_token">Error sending token to server: %1$s</string>
-    <string name="role_not_found">Role not found</string>
 
     <string name="do_you_have_no_account">Do you have no account?</string>
 
@@ -176,6 +175,36 @@
 
     <string name="please_enter_weight">Please enter weight for</string>
     <string name="updated">Updated</string>
+    <string name="select_waste_types">Select waste types:</string>
 
+    <string name="da_per_kg">DA/Kg</string>
+    <string name="image_captured_success">The photo was successfully taken</string>
+    <string name="image_captured"> The photo was taken"</string>
+    <string name="please_take_a_picture_for_each_waste_type">Please take a picture for each waste type!</string>
+    <string name="signup">SignUp</string>
+
+    <string name="update_required_title">Mandatory Update</string>
+    <string name="update_available_title">New Update Available</string>
+    <string name="default_update_message">A new update is available for the application.</string>
+    <string name="update_now">Update Now</string>
+    <string name="exit_app">Close App</string>
+    <string name="later">Not Now</string>
+    <string name="play_store_not_found">Google Play not available, downloading from server...</string>
+    <string name="update_failed_app">Failed to access update links</string>
+    <string name="role_not_found">User role not found</string>
+
+    <!-- Profile Activity -->
+    <string name="profile">Profile</string>
+    <string name="phone">Phone</string>
+    <string name="user_type">User Type</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="delete_account_confirm_title">Delete Account?</string>
+    <string name="delete_account_confirm_message">Are you sure you want to permanently delete your account? This action cannot be undone.</string>
+    <string name="account_deleted_success">Account deleted successfully.</string>
+    <string name="loading_profile">Loading profile…</string>
+    <string name="deleting_account">Deleting account…</string>
+
+    <string name="no_reports_yet">No reports yet</string>
+    <string name="lets_create_first_report">Let\'s create your first report!</string>
 
 </resources>

@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:fitsSystemWindows="false"
     android:background="@color/lightGreen"
     tools:context=".LoginActivity">
 
@@ -32,129 +31,127 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
             android:gravity="center">
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:src="@drawable/adnm_logo"
-                android:layout_marginTop="150dp" />
-
-            <Space
-                android:id="@+id/space3"
-                android:layout_width="match_parent"
-                android:layout_height="60dp" />
-
-            <EditText
-                android:id="@+id/email_edit_text"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:background="@drawable/shape_feilds"
-                android:textSize="18sp"
-                android:inputType="textEmailAddress"
-                android:layout_marginHorizontal="30dp"
-                android:drawableStart="@drawable/ic_email"
-                android:drawableTint="@color/green"
-                android:drawablePadding="10dp"/>
+                app:cardCornerRadius="20dp"
+                app:cardElevation="5dp"
+                android:layout_margin="20dp">
 
-            <Space
-                android:id="@+id/space"
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-            <EditText
-                android:id="@+id/password_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:textSize="18sp"
-                android:background="@drawable/shape_feilds"
-                android:inputType="textPassword"
-                android:layout_marginHorizontal="30dp"
-                android:drawableStart="@drawable/ic_lock"
-                android:drawableTint="@color/green"
-                android:drawablePadding="10dp"/>
-
-            <Space
-                android:id="@+id/space2"
-                android:layout_width="match_parent"
-                android:layout_height="30dp" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/login_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/login"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:background="@drawable/btn_primary"
-                android:foreground="?attr/selectableItemBackground"
-                android:layout_marginHorizontal="50dp" />
-
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingHorizontal="20dp">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="2dp"
-                    android:layout_weight="1"
-                    android:background="@color/black"/>
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="match_parent"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/do_you_have_no_account"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="match_parent"/>
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/adnm_logo" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="2dp"
-                    android:layout_weight="1"
-                    android:background="@color/black"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/green"/>
 
-            </LinearLayout>
+                    <Space
+                        android:id="@+id/space3"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
+                    <EditText
+                        android:id="@+id/email_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="30dp"
+                        android:background="@drawable/shape_feilds"
+                        android:drawableStart="@drawable/ic_email"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="@color/green"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        android:textSize="18sp" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/register_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/register"
-                android:background="@drawable/btn_out_primary"
-                android:foreground="?attr/selectableItemBackground"
-                android:textColor="@color/green"
-                android:textStyle="bold"
-                android:layout_marginHorizontal="50dp"/>
+                    <Space
+                        android:id="@+id/space"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp" />
 
+                    <EditText
+                        android:id="@+id/password_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="30dp"
+                        android:background="@drawable/shape_feilds"
+                        android:drawableStart="@drawable/ic_lock"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="@color/green"
+                        android:hint="@string/password"
+                        android:inputType="textPassword"
+                        android:textSize="18sp" />
+
+                    <Space
+                        android:id="@+id/space2"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/login_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="50dp"
+                        android:background="@drawable/btn_primary"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:text="@string/login"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingHorizontal="20dp"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/do_you_have_no_account" />
+
+                        <TextView
+                            android:id="@+id/register_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:padding="8dp"
+                            android:text="@string/signup"
+                            android:textColor="@color/green"
+                            android:textStyle="bold"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?attr/selectableItemBackground" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
-
-
-
-    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

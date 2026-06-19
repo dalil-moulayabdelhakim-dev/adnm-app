@@ -1,148 +1,142 @@
 package com.dldevalopement.adnm
 
-// Import necessary Android, local, and external libraries
 import android.content.Intent
-import android.content.IntentSender
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.dldevalopement.adnm.database.CONFIG_URL
 import com.dldevalopement.adnm.database.DATA
 import com.dldevalopement.adnm.database.ROLE
 import com.dldevalopement.adnm.database.TOKEN
 import com.dldevalopement.adnm.databinding.ActivitySplashScreenBinding
 import com.dldevalopement.adnm.home.CollectorActivity
 import com.dldevalopement.adnm.home.ReporterActivity
-import com.dldevalopement.adnm.BuildConfig
-import com.google.android.play.core.appupdate.AppUpdateInfo
-import com.google.android.play.core.appupdate.AppUpdateManager
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.android.play.core.tasks.Task
 
-/**
- * A SplashScreen activity that handles the initial startup logic of the application.
- * It checks for an existing user session and redirects the user accordingly.
- */
 class SplashScreen : AppCompatActivity() {
 
-    // View binding instance for safe access to views
     private lateinit var _binding: ActivitySplashScreenBinding
     private val binding get() = _binding
 
-    private lateinit var appUpdateManager: AppUpdateManager
-    private val REQUEST_CODE_UPDATE = 1234
-
-    // A Handler to post a delayed action to navigate away from the splash screen
-    private val handler = Handler()
-
-    /**
-     * Called when the activity is first created.
-     * Sets up the layout, displays the app version, and schedules the redirection.
-     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivitySplashScreenBinding.inflate(layoutInflater)
+        enableEdgeToEdge()
         setContentView(_binding.root)
 
-        // Create an instance of AppUpdateManager
-        appUpdateManager = AppUpdateManagerFactory.create(this)
-
-// Check if there is an update available for the app
-        checkForUpdate()
-
-
-        // Set the version text using BuildConfig and device information
-        // Note: The `BuildConfig` from 'com.google.android.datatransport' is likely a typo.
-        // It should be the one generated for your app, located at the app-level package.
-        binding.version.text =
-            "V${BuildConfig.VERSION_NAME} (Android ${Build.VERSION.RELEASE}, API ${Build.VERSION.SDK_INT})"
-
-        // Schedule the `loadPage` function to run after a 2-second delay
-        handler.postDelayed(runnable, 2000)
-    }
-
-    // A Runnable that calls the `loadPage` function
-    private val runnable = Runnable {
-        loadPage()
-    }
-
-    /**
-     * Determines which page to load based on the user's login status and role.
-     * It checks for an existing authentication token in SharedPreferences.
-     */
-    private fun loadPage() {
-        // Retrieve the SharedPreferences instance
-        val sharedPreferences = getSharedPreferences(DATA, MODE_PRIVATE)
-        // Get the authentication token and user role
-        val token = sharedPreferences.getString(TOKEN, null)
-        val role = sharedPreferences.getInt(ROLE, 0)
-
-        // Check if a token exists, which indicates a logged-in user
-        if (token != null) {
-            // Redirect based on the user's role
-            when (role) {
-                2 -> startActivity(Intent(this, ReporterActivity::class.java)) // Reporter role
-                1 -> startActivity(Intent(this, CollectorActivity::class.java)) // Collector role
-                else -> Toast.makeText(this, getString(R.string.role_not_found), Toast.LENGTH_SHORT)
-                    .show()
-            }
-            // Finish the splash screen activity so the user can't return to it
-            finish()
-        } else {
-            // If no token exists, the user is not logged in, so navigate to the LoginActivity
-            startActivity(Intent(this, LoginActivity::class.java))
-            // Finish the splash screen activity
-            finish()
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
+
+        binding.version.text = "${BuildConfig.VERSION_NAME} (V${BuildConfig.VERSION_CODE})"
+
+        // الخطوة 1: التحقق من التحديث عبر السيرفر الخاص بك أولاً
+        checkServerForUpdate()
     }
 
-    // Function to check for app updates using Play Core In-App Updates API
-    private fun checkForUpdate() {
-        // Get the task that returns AppUpdateInfo
-        val appUpdateInfoTask: Task<AppUpdateInfo> = appUpdateManager.appUpdateInfo
+    private fun checkServerForUpdate() {
+        val request = JsonObjectRequest(Request.Method.GET, CONFIG_URL, null,
+            { response ->
+                val minVersionCode = response.optInt("min_version_code", 0)
+                val isRequired = response.optBoolean("is_update_required", false)
+                val playStoreUrl = response.optString("play_store_url")
+                val serverUrl = response.optString("server_download_url")
 
-        // Add a listener when the task succeeds
-        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            // Check if an update is available and if immediate updates are allowed
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-            ) {
-                // Start the immediate update flow (full-screen dialog)
-                startUpdate(appUpdateInfo)
-            }else{
+                // استخدام النص من السيرفر أو النص الافتراضي من الموارد
+                val message = response.optString("message", getString(R.string.default_update_message))
+
+                val currentVersionCode = BuildConfig.VERSION_CODE
+
+                if (currentVersionCode < minVersionCode) {
+                    showUpdateDialog(playStoreUrl, serverUrl, message, isRequired)
+                } else {
+                    loadPage()
+                }
+            },
+            { error ->
+                loadPage()
+            }
+        )
+        Volley.newRequestQueue(this).add(request)
+    }
+
+    private fun showUpdateDialog(playUrl: String, serverUrl: String, message: String, isRequired: Boolean) {
+        val title = if (isRequired) getString(R.string.update_required_title) else getString(R.string.update_available_title)
+
+        val builder = AlertDialog.Builder(this, R.style.dialog)
+            .setTitle(title)
+            .setMessage(message)
+            .setCancelable(!isRequired)
+            .setPositiveButton(getString(R.string.update_now)) { _, _ ->
+                handleUpdateAction(playUrl, serverUrl)
+            }
+
+        if (isRequired) {
+            builder.setNegativeButton(getString(R.string.exit_app)) { _, _ ->
+                finish()
+            }
+        } else {
+            builder.setNegativeButton(getString(R.string.later)) { _, _ ->
                 loadPage()
             }
         }
+
+        builder.show()
     }
 
-    // Function to start the update flow
-    private fun startUpdate(appUpdateInfo: AppUpdateInfo) {
+    private fun handleUpdateAction(playUrl: String, serverUrl: String) {
         try {
-            appUpdateManager.startUpdateFlowForResult(
-                appUpdateInfo,               // The update info retrieved from Play Store
-                AppUpdateType.IMMEDIATE,     // Use immediate update (full-screen)
-                this,                        // Activity context
-                REQUEST_CODE_UPDATE          // Request code to identify the result
-            )
-        } catch (e: IntentSender.SendIntentException) {
-            // Handle any errors that may occur while starting the update
-            e.printStackTrace()
-        }
-    }
-
-    // Handle the result of the update flow
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_CODE_UPDATE) {
-            if (resultCode != RESULT_OK) {
-                // The user either canceled the update or an error occurred
-                // Here you can close the app or show a message to the user
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(playUrl))
+            startActivity(intent)
+            finish()
+        } catch (e: Exception) {
+            // استخدام نصوص التوست من الموارد
+            Toast.makeText(this, getString(R.string.play_store_not_found), Toast.LENGTH_LONG).show()
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(serverUrl))
+                startActivity(intent)
+                finish()
+            } catch (ex: Exception) {
+                Toast.makeText(this, getString(R.string.update_failed_app), Toast.LENGTH_SHORT).show()
+                finish()
             }
         }
     }
 
+    private fun loadPage() {
+        val sharedPreferences = getSharedPreferences(DATA, MODE_PRIVATE)
+        val token = sharedPreferences.getString(TOKEN, null)
+        val role = sharedPreferences.getInt(ROLE, 0)
+
+        if (token != null) {
+            val nextIntent = when (role) {
+                2 -> Intent(this, ReporterActivity::class.java)
+                1 -> Intent(this, CollectorActivity::class.java)
+                else -> null
+            }
+
+            if (nextIntent != null) {
+                startActivity(nextIntent)
+                finish()
+            } else {
+                Toast.makeText(this, getString(R.string.role_not_found), Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
+        } else {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+    }
 }

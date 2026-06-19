@@ -140,7 +140,6 @@
     <string name="unsubscribed_collectors">تم إلغاء الاشتراك من موضوع الجامعين</string>
     <string name="token_sent">تم إرسال الرمز إلى الخادم: %1$s</string>
     <string name="error_sending_token">خطأ في إرسال الرمز إلى الخادم: %1$s</string>
-    <string name="role_not_found">لم يتم العثور على الدور</string>
 
     <string name="do_you_have_no_account">ليس لديك حساب؟</string>
 
@@ -176,5 +175,25 @@
 
     <string name="please_enter_weight">الرجاء إدخال وزن </string>
     <string name="updated">تم التحديث</string>
+
+    <string name="select_waste_types">اختر أنواع النفايات:</string>
+
+
+    <string name="da_per_kg">كغ/دج</string>
+
+    <string name="image_captured_success">تم التقاط الصورة بنجاح</string>
+    <string name="image_captured"> تم التقاط الصورة"</string>
+    <string name="please_take_a_picture_for_each_waste_type">الرجاء التقاط صورة لكل نوع تم تحديده!</string>
+    <string name="signup">تسجيل</string>
+
+    <string name="update_required_title">تحديث إجباري</string>
+    <string name="update_available_title">تحديث جديد</string>
+    <string name="default_update_message">هناك تحديث جديد متوفر للتطبيق.</string>
+    <string name="update_now">تحديث الآن</string>
+    <string name="exit_app">إغلاق التطبيق</string>
+    <string name="later">ليس الآن</string>
+    <string name="play_store_not_found">متجر بلاي غير متوفر، جاري التحميل من السيرفر...</string>
+    <string name="update_failed_app">فشل الوصول إلى روابط التحديث</string>
+    <string name="role_not_found">لم يتم العثور على دور المستخدم</string>
 
 </resources>

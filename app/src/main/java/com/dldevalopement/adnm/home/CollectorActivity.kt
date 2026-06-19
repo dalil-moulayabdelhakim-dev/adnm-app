@@ -2,17 +2,22 @@ package com.dldevalopement.adnm.home
 
 // Import necessary Android, Google Maps, Volley, and local classes
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.dldevalopement.adnm.GPSUtils
 import com.dldevalopement.adnm.PermissionHelper
+import com.dldevalopement.adnm.ProfileActivity
 import com.dldevalopement.adnm.R
 import com.dldevalopement.adnm.database.*
 import com.dldevalopement.adnm.databinding.ActivityCollectorBinding
@@ -55,15 +60,26 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityCollectorBinding.inflate(layoutInflater)
+        enableEdgeToEdge()
         setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         // Set a click listener for the logout button
         binding.logoutButton.setOnClickListener {
             AuthManager.logout(this)
         }
 
+        binding.profileButton.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
         // Request necessary permissions (notifications and location)
-        PermissionHelper.requestNotificationAndLocation(this)
+        PermissionHelper.requestPermissions(this)
 
         // Initialize the Fused Location Provider client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)

@@ -1,17 +1,30 @@
 package com.dldevalopement.adnm.home.reporter
 
 /**
- * A data class to represent a single waste type.
- * Data classes are a special kind of class in Kotlin designed to hold data.
- * The compiler automatically generates useful functions like equals(), hashCode(),
- * toString(), and copy() based on the properties defined in the primary constructor.
+ * A data class to represent a single waste type with localized names.
  *
- * @property id The unique identifier of the waste type, usually from a database.
- * @property name The name or description of the waste type (e.g., "Plastic", "Glass").
+ * @property id The unique identifier of the waste type.
+ * @property nameEn The name in English.
+ * @property nameAr The name in Arabic.
+ * @property nameFr The name in French.
  * @property pricePerKg The price per kilogram for this specific waste type.
  */
 data class WasteType(
     val id: Int,
-    val name: String,
+    val nameEn: String,
+    val nameAr: String,
+    val nameFr: String,
     val pricePerKg: Double
-)
+) {
+    /**
+     * Returns the appropriate name based on the provided language code.
+     * Defaults to nameEn if no match is found.
+     */
+    fun getNameByLang(lang: String): String {
+        return when (lang) {
+            "ar" -> nameAr
+            "fr" -> nameFr
+            else -> nameEn
+        }
+    }
+}

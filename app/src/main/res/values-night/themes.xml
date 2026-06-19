@@ -10,10 +10,9 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorOnSecondary">@color/white</item>
 
-        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:statusBarColor">@color/green</item>
     </style>
 
     <style name="dialog" parent="Theme.Material3.Light.Dialog.Alert">

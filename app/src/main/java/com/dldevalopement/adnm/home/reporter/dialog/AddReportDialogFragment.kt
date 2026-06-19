@@ -8,24 +8,24 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.DialogFragment
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
@@ -34,13 +34,13 @@ import com.dldevalopement.adnm.GPSUtils
 import com.dldevalopement.adnm.R
 import com.dldevalopement.adnm.database.*
 import com.dldevalopement.adnm.databinding.DialogAddReportBinding
-import com.dldevalopement.adnm.home.collector.dialog.ReportInfoDialogFragment.ReportStatusListener
 import com.dldevalopement.adnm.home.reporter.WasteType
-import com.dldevalopement.adnm.manager.AuthManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.util.Locale
 
 /**
  * A DialogFragment for reporters to add a new waste report.
@@ -63,9 +63,14 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
     private var currentLat: Double? = null
     private var currentLng: Double? = null
 
+    private val wasteImagesBase64 = HashMap<Int, String>() // Key: Waste ID, Value: Base64 String
+    private var currentWasteIdForPhoto: Int? = null
+
     private var isVerified = false
 
     private val selectedWasteTypes = mutableListOf<WasteType>()
+
+    private val wasteStatusViews = HashMap<Int, TextView>()
 
 
     /**
@@ -109,31 +114,30 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
         }
 
         // Build and return the AlertDialog
-        return AlertDialog.Builder(context, R.style.dialog)
+        val dialog = AlertDialog.Builder(context, R.style.dialog)
             .setTitle(context.getString(R.string.add_report))
             .setView(binding.root)
             .setCancelable(false)
-            .setPositiveButton(context.getString(R.string.submit)) { _, _ ->
-                // Validate that a waste type is selected and weight is entered
-                    val manager =
-                        context.getSystemService(Context.LOCATION_SERVICE) as (LocationManager)
-                    // Check if GPS is enabled before sending the report
-                    if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.enable_gps),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        // Send the report with the collected data
-                        if (isVerified)
-                        sendReport( currentLat ?: 0.0, currentLng ?: 0.0)
-                        else
-                            Toast.makeText(context, context.getString(R.string.check_the_box_message), Toast.LENGTH_LONG).show()
-                    }
-            }
+            .setPositiveButton(context.getString(R.string.submit), null) // نضع null هنا مؤقتاً
             .setNegativeButton(context.getString(R.string.cancel), null)
             .create()
+
+        // هذا الجزء هو السر: نمنع الديالوج من الانغلاق
+        dialog.setOnShowListener {
+            val submitButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            submitButton.setOnClickListener {
+                val manager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    Toast.makeText(context, context.getString(R.string.enable_gps), Toast.LENGTH_SHORT).show()
+                } else {
+                        sendReport(currentLat ?: 0.0, currentLng ?: 0.0)
+                }
+                // لاحظ: لا يوجد dismiss() هنا، لذا الديالوج سيبقى مفتوحاً حتى نغلقه نحن يدوياً عند النجاح فقط
+            }
+        }
+
+        return dialog
     }
 
     /**
@@ -154,9 +158,11 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
                         for (i in 0 until jsonArray.length()) {
                             val obj = jsonArray.getJSONObject(i)
                             val id = obj.getInt(ID)
-                            val name = obj.getString(TYPE)
+                            val nameEn = obj.getString(TYPE_EN)
+                            val nameAr = obj.getString(TYPE_AR)
+                            val nameFr = obj.getString(TYPE_FR)
                             val pricePerKg = obj.getDouble(PRICE)
-                            tempList.add(WasteType(id, name, pricePerKg))
+                            tempList.add(WasteType(id, nameEn, nameAr, nameFr, pricePerKg))
                         }
 
                         wasteTypes = tempList.sortedBy { it.id }
@@ -164,23 +170,92 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
                         // ننظف الكونتينر قبل ما نضيفو
                         binding.checkboxContainer.removeAllViews()
 
+                        // تحديد لغة الجهاز الحالية
+                        val currentLang = Locale.getDefault().language
+
                         // نضيف CheckBox لكل نوع نفايات
                         for (waste in wasteTypes) {
-                            val checkBox = CheckBox(context)
-                            checkBox.text = waste.name
-                            checkBox.tag = waste   // نخزنو الـ Object كامل في tag
+                            val layout = LinearLayout(context).apply {
+                                orientation = LinearLayout.HORIZONTAL
+                                gravity = android.view.Gravity.CENTER_VERTICAL
+                                layoutParams = LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                )
+                            }
+
+                            val checkBox = CheckBox(context).apply {
+                                // الحصول على الاسم بناءً على اللغة
+                                val localizedName = waste.getNameByLang(currentLang)
+                                
+                                val namePrefix = "$localizedName - "
+                                val price = "${waste.pricePerKg}"
+                                val unit = " ${context.getString(R.string.da_per_kg)}"
+
+                                // دمج النصوص بالترتيب
+                                val fullText = namePrefix + price + unit
+
+                                // إنشاء SpannableString لتلوين جزء من النص
+                                val spannable = android.text.SpannableString(fullText)
+
+                                // تحديد بداية ونهاية السعر داخل النص الكامل
+                                val start = namePrefix.length
+                                val end = start + price.length
+
+                                // تطبيق اللون الأخضر على السعر فقط
+                                spannable.setSpan(
+                                    android.text.style.ForegroundColorSpan(context.getColor(R.color.green)),
+                                    start,
+                                    end,
+                                    android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
+
+                                // تطبيق النص المنسق على الـ CheckBox
+                                text = spannable
+
+                                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                            }
+
+                            val imgButton = ImageView(context).apply {
+                                setImageResource(R.drawable.ic_camera)
+                                visibility = View.GONE
+                                setPadding(15, 10, 15, 10)
+                            }
+
+                            val statusText = TextView(context).apply {
+                                text = ""
+                                textSize = 12f
+                                setTextColor(context.getColor(R.color.green))
+                                visibility = View.GONE
+                                setPadding(10, 0, 10, 0)
+                            }
+
+                            wasteStatusViews[waste.id] = statusText
+
+                            imgButton.setOnClickListener {
+                                openCameraForWaste(waste.id)
+                            }
 
                             checkBox.setOnCheckedChangeListener { _, isChecked ->
                                 if (isChecked) {
-                                    // تمت الإضافة
                                     selectedWasteTypes.add(waste)
+                                    imgButton.visibility = View.VISIBLE
+                                    statusText.visibility = View.VISIBLE
                                 } else {
-                                    // تمت الإزالة
                                     selectedWasteTypes.remove(waste)
+                                    wasteImagesBase64.remove(waste.id)
+                                    imgButton.visibility = View.GONE
+                                    statusText.visibility = View.GONE
+                                    statusText.text = ""
                                 }
                             }
 
-                            binding.checkboxContainer.addView(checkBox)
+                            // الترتيب الجديد لضمان ظهور النص على يسار الأيقونة
+                            layout.addView(checkBox)   // يأخذ المساحة الكبرى على اليسار
+                            layout.addView(statusText) // يظهر بعد التشيك بوكس (على يسار الأيقونة)
+                            layout.addView(imgButton)  // يظهر في أقصى اليمين
+
+                            binding.checkboxContainer.addView(layout)
                         }
 
                     } else {
@@ -192,7 +267,7 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    Toast.makeText(context, context.getString(R.string.parsing_error), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.parsing_error, e.message), Toast.LENGTH_SHORT).show()
                 }
             },
             { error ->
@@ -248,83 +323,114 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
 
     /**
      * Sends the report data to the server via a Volley POST request.
-     * @param weight The weight of the waste.
      * @param lat The latitude of the report location.
      * @param lng The longitude of the report location.
      */
+    // Function to send a waste report with location and selected waste types
     private fun sendReport(lat: Double, lng: Double) {
+        // Check if the user selected any waste types before sending
         if (selectedWasteTypes.isEmpty()) {
             Toast.makeText(context, context.getString(R.string.select_waste_type), Toast.LENGTH_SHORT).show()
             return
         }
 
+        if (selectedWasteTypes.any { !wasteImagesBase64.containsKey(it.id) }) {
+            Toast.makeText(context, context.getString(R.string.please_take_a_picture_for_each_waste_type), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (!isVerified){
+            Toast.makeText(context, context.getString(R.string.check_the_box_message), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Show loading dialog while sending the report
         val progressDialog = ProgressDialog(context).apply { show() }
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(DATA, MODE_PRIVATE)
 
-        // نحضر JSON Body
-        val selectedIds = selectedWasteTypes.map { it.id }
+        // Prepare JSON body for the API request
+        //val selectedIds = selectedWasteTypes.map { it.id }
+        val wasteDataArray = JSONArray()
+        for (waste in selectedWasteTypes) {
+            val obj = JSONObject()
+            obj.put("id", waste.id)
+            obj.put("image", wasteImagesBase64[waste.id] ?: "") // إرسال الصورة كـ string
+            wasteDataArray.put(obj)
+        }
         val jsonBody = JSONObject().apply {
             put("latitude", lat.toString())
             put("longitude", lng.toString())
-            put("waste_type_ids", JSONArray(selectedIds))
+            put("waste_data", wasteDataArray) // استبدلنا waste_type_ids بـ waste_data
         }
 
+        // Create a POST request using Volley
         val request = object : JsonObjectRequest(
             Method.POST,
             REPORTER_ADD_REPORT_URL,
             jsonBody,
             { response ->
+                // Handle successful response
                 progressDialog.dismiss()
                 Toast.makeText(context, response.optString(MESSAGE, "Report added"), Toast.LENGTH_SHORT).show()
                 listener?.onReportStatusChanged()
                 dismiss()
             },
             { error ->
+                // Handle network or server error
                 progressDialog.dismiss()
                 Log.e("API_DEBUG", "Error: ${error.message}", error)
                 Toast.makeText(context, "${context.getString(R.string.failed)}: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         ) {
+            // Add headers including authorization token
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers["Accept"] = "application/json"
                 headers["Content-Type"] = "application/json"
                 headers[AUTHORIZATION] = "$BEARER ${sharedPreferences.getString(TOKEN, "")}"
+                Log.i("API_DEBUG", "Headers: ${headers[AUTHORIZATION]}")
                 return headers
             }
         }
 
+        // Add the request to the queue for execution
         Volley.newRequestQueue(context).add(request)
     }
 
-
-
-
+    // Function to verify user using reCAPTCHA
     private fun verify(context: Context, progressBar: ProgressBar, checkBox: CheckBox, errorIC: ImageView){
+        // Show loading indicator and hide the checkbox initially
         progressBar.visibility = View.VISIBLE
         checkBox.visibility = View.GONE
         val queue = Volley.newRequestQueue(context)
 
+        // Create a POST request to verify reCAPTCHA
         val request = object : StringRequest(
             Method.POST, RECAPTCHA_URL,
             Response.Listener { res ->
+                // Parse the response
                 val jsonObject = JSONObject(res)
                 val success = jsonObject.getBoolean(SUCCESS)
                 isVerified = success
+
                 if (success){
+                    // If verification succeeded, update UI
                     progressBar.visibility = View.GONE
                     checkBox.visibility = View.VISIBLE
                     checkBox.isEnabled = false
                     binding.recaptchaButton.isEnabled = false
-                }else{
+                } else {
+                    // If verification failed, show error message
                     progressBar.visibility = View.GONE
                     checkBox.visibility = View.VISIBLE
                     Toast.makeText(context, context.getString(R.string.verification_failed), Toast.LENGTH_SHORT).show()
                 }
-                checkBox.isChecked = success
 
+                // Update checkbox state
+                checkBox.isChecked = success
             },
             Response.ErrorListener { error ->
+                // Handle network or API errors
                 error.printStackTrace()
                 errorIC.visibility = View.VISIBLE
                 progressBar.visibility = View.GONE
@@ -332,19 +438,46 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
                 Toast.makeText(context, "${context.getString(R.string.error)}: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         ) {
+            // Send required parameters for verification
             override fun getParams(): Map<String, String> {
                 val safeToken = context.getString(R.string.recaptcha_site_key)
                 return mapOf(TOKEN to safeToken)
             }
         }
+
+        // Add request to the queue
         queue.add(request)
+    }
+
+    // في بداية الكلاس
+    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+        if (bitmap != null && currentWasteIdForPhoto != null) {
+            // تحويل الصورة لـ Base64
+            val outputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
+            val base64Image = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
+
+            // حفظها في الماب
+            wasteImagesBase64[currentWasteIdForPhoto!!] = base64Image
+
+            // --- التعديل هنا: تحديث النص بجانب الكاميرا ---
+            wasteStatusViews[currentWasteIdForPhoto!!]?.apply {
+                text = context.getString(R.string.image_captured)
+            }
+
+            Toast.makeText(context, context.getString(R.string.image_captured_success), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openCameraForWaste(wasteId: Int) {
+        currentWasteIdForPhoto = wasteId
+        takePictureLauncher.launch(null)
     }
 
     /**
      * Cleans up the view binding instance to avoid memory leaks.
      */
     override fun onDestroyView() {
-        listener = null
         _binding = null
         super.onDestroyView()
     }

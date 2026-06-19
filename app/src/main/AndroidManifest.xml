@@ -7,7 +7,15 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <queries>
+        <package android:name="com.dldevalopement.adnm" />
+    </queries>
 
     <application
         android:allowBackup="false"
@@ -20,6 +28,10 @@
         android:theme="@style/Theme.ADNM"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:label="@string/profile" />
         <activity
             android:name=".home.CollectorActivity"
             android:exported="false" />
@@ -46,6 +58,7 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
+
         <service
             android:name=".home.collector.services.FirebaseCloudMessageService"
             android:exported="false">
@@ -53,7 +66,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

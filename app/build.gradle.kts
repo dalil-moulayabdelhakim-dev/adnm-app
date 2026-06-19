@@ -12,8 +12,8 @@ android {
         applicationId = "com.dldevalopement.adnm"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0-beta"
+        versionCode = 6
+        versionName = "4.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -66,5 +66,8 @@ dependencies {
 
     implementation ("com.google.android.gms:play-services-safetynet:18.1.0")
 
-    implementation ("com.google.android.play:core:1.10.3")
+    implementation ("com.google.android.play:app-update:2.1.0")
+    implementation ("com.google.android.play:app-update-ktx:2.1.0")
+
+
 }
