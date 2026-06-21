@@ -222,31 +222,9 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
                         mMap.setOnMarkerClickListener { marker ->
                             val obj = marker.tag as? JSONObject ?: return@setOnMarkerClickListener true
 
-                            val id = obj.getInt("id")
-                            val status = obj.getString("status")
-                            val wasteArray = obj.getJSONArray("waste_types")
-
-                            val wasteTypes = mutableListOf<String>()
-                            val wasteTypesID = mutableListOf<String>()
-                            for (i in 0 until wasteArray.length()) {
-                                val wastJOB = wasteArray.getJSONObject(i)
-                                wasteTypes.add(wastJOB.getString(TYPE))
-                                wasteTypesID.add(wastJOB.getString(ID))
-                            }
-
-                            if (status == "accepted") {
-                                val dialog = ReportInfoDialogFragment(
-                                    this, id, emptyList(), emptyList(), status
-                                )
-                                dialog.setReportStatusListener(this)
-                                dialog.show(supportFragmentManager, "ReportInfoDialog")
-                            } else if (status == "in_progress") {
-                                val dialog = ReportInfoDialogFragment(
-                                    this, id, wasteTypesID, wasteTypes, status
-                                )
-                                dialog.setReportStatusListener(this)
-                                dialog.show(supportFragmentManager, "ReportInputDialog")
-                            }
+                            val dialog = ReportInfoDialogFragment(this, obj)
+                            dialog.setReportStatusListener(this)
+                            dialog.show(supportFragmentManager, "ReportInfoDialog")
                             true
                         }
                     } else {

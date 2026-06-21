@@ -209,4 +209,6 @@
     <string name="lets_create_first_report">Créons votre premier rapport !</string>
     <string name="connection_error">Erreur de connexion</string>
 
+    <string name="powered_by">Propulsé par DLDevelopment</string>
+
 </resources>

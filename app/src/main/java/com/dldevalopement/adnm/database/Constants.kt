@@ -17,6 +17,8 @@ const val TERMS_URL = "$HOST/terms"
 // ================= Update ==========================================
 
 
+private const val string = "app-settings-android.json"
+
 const val CONFIG_URL = "$HOST/storage/app-settings-android.json"
 
 // ================= Auth (Authentication) Endpoints =================

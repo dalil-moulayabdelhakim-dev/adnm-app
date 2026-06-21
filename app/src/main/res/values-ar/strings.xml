@@ -211,4 +211,6 @@
     <string name="lets_create_first_report">لنقم بإنشاء أول بلاغ لك!</string>
     <string name="connection_error">خطأ في الاتصال</string>
 
+    <string name="powered_by">بدعم من DLDevelopment</string>
+
 </resources>

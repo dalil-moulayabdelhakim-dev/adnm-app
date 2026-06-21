@@ -60,6 +60,7 @@
     <string name="start_collecting">Start Collecting</string>
     <string name="collected">Collected</string>
     <string name="close">Close</string>
+    <string name="call">Call</string>
 
     <!-- Messages -->
     <string name="update_success">%1$s to %2$s</string>
@@ -159,6 +160,7 @@
 
     <string name="please_wait">Please wait…</string>
     <string name="phone_number">Phone number</string>
+    <string name="user_info">User Info</string>
     <string name="error_title">Error</string>
     <string name="kg">Kg</string>
 
@@ -207,5 +209,7 @@
     <string name="no_reports_yet">No reports yet</string>
     <string name="lets_create_first_report">Let\'s create your first report!</string>
     <string name="connection_error">Connection Error</string>
+
+    <string name="powered_by">Powered by DLDevelopment</string>
 
 </resources>
