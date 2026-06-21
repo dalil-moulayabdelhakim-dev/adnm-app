@@ -61,6 +61,7 @@
     <string name="collected">Collected</string>
     <string name="close">Close</string>
     <string name="call">Call</string>
+    <string name="drive">Drive</string>
 
     <!-- Messages -->
     <string name="update_success">%1$s to %2$s</string>

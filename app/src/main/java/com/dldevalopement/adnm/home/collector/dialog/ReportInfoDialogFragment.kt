@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -68,6 +69,14 @@ class ReportInfoDialogFragment(
         val container = view.findViewById<LinearLayout>(R.id.containerWasteTypes)
         view.findViewById<TextView>(R.id.tvId).text = "${context.getString(R.string.id)}: $id"
         view.findViewById<TextView>(R.id.tvStatus).text = "${context.getString(R.string.status)}: $status"
+
+        val btnDrive = view.findViewById<Button>(R.id.btnDrive)
+        if (status == "in_progress") {
+            btnDrive.visibility = View.VISIBLE
+            btnDrive.setOnClickListener {
+                openNavigation(lat, lng)
+            }
+        }
 
         // User Info (Reporter)
         val userObj = reportJson.optJSONObject("user")
@@ -137,20 +146,7 @@ class ReportInfoDialogFragment(
         when (status) {
             "accepted" -> {
                 builder.setPositiveButton(context.getString(R.string.start_collecting)) { _, _ ->
-                    // Open Google Maps Navigation
-                    if (lat != "0.0000000" && lng != "0.0000000") {
-                        val gmmIntentUri = Uri.parse("google.navigation:q=$lat,$lng&mode=d")
-                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                        mapIntent.setPackage("com.google.android.apps.maps")
-                        try {
-                            startActivity(mapIntent)
-                        } catch (e: Exception) {
-                            // Fallback to browser
-                            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving"))
-                            startActivity(browserIntent)
-                        }
-                    }
-                    
+                    openNavigation(lat, lng)
                     updateReportStatus(id, "in_progress", JSONArray())
                 }
             }
@@ -167,6 +163,23 @@ class ReportInfoDialogFragment(
         builder.setNegativeButton(context.getString(R.string.close)) { dialog, _ -> dialog.dismiss() }
 
         return builder.create()
+    }
+
+    private fun openNavigation(lat: String, lng: String) {
+        if (lat != "0.0000000" && lng != "0.0000000") {
+            val gmmIntentUri = Uri.parse("google.navigation:q=$lat,$lng&mode=d")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            try {
+                startActivity(mapIntent)
+            } catch (e: Exception) {
+                // Fallback to browser
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving"))
+                startActivity(browserIntent)
+            }
+        } else {
+            Toast.makeText(context, "Location not available", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // Function to collect entered weights and create a JSON array

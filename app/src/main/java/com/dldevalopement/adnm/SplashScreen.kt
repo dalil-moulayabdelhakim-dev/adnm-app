@@ -39,7 +39,7 @@ class SplashScreen : AppCompatActivity() {
             insets
         }
 
-        binding.version.text = "${BuildConfig.VERSION_NAME} (V${BuildConfig.VERSION_CODE})"
+        binding.version.text = "(${BuildConfig.VERSION_CODE}) V${BuildConfig.VERSION_NAME}"
 
         // الخطوة 1: التحقق من التحديث عبر السيرفر الخاص بك أولاً
         checkServerForUpdate()
