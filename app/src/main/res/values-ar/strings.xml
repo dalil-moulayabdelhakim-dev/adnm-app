@@ -56,6 +56,8 @@
     <string name="start_collecting">ابدأ الجمع</string>
     <string name="collected">تم الجمع</string>
     <string name="close">إغلاق</string>
+    <string name="call">اتصال</string>
+    <string name="drive">قيادة</string>
 
     <!-- Messages -->
     <string name="update_success">%1$s إلى %2$s</string>
@@ -156,6 +158,7 @@
 
     <string name="please_wait">انتظر من فضلك…</string>
     <string name="phone_number">رقم الهاتف</string>
+    <string name="user_info">معلومات المستخدم</string>
     <string name="error_title">خطأ</string>
     <string name="kg">كغ</string>
 
@@ -170,7 +173,7 @@
     <string name="select_role_message">هل أنت جامع أو مُبلّغ؟</string>
     <string name="check_the_box_message">يرجى الضغط على المربع للتحقق</string>
     <string name="not_available">غير متوفر</string>
-    <string name="waste_types">انواع النفايات</string>
+    <string name="waste_types">أنواع النفايات</string>
 
 
     <string name="please_enter_weight">الرجاء إدخال وزن </string>
@@ -179,10 +182,10 @@
     <string name="select_waste_types">اختر أنواع النفايات:</string>
 
 
-    <string name="da_per_kg">كغ/دج</string>
+    <string name="da_per_kg">دج/كغ</string>
 
     <string name="image_captured_success">تم التقاط الصورة بنجاح</string>
-    <string name="image_captured"> تم التقاط الصورة"</string>
+    <string name="image_captured"> تم التقاط الصورة</string>
     <string name="please_take_a_picture_for_each_waste_type">الرجاء التقاط صورة لكل نوع تم تحديده!</string>
     <string name="signup">تسجيل</string>
 
@@ -212,5 +215,9 @@
     <string name="connection_error">خطأ في الاتصال</string>
 
     <string name="powered_by">بدعم من DLDevelopment</string>
+
+    <string name="verify_location">يرجى التحقق من موقعك على الخريطة</string>
+    <string name="refresh_location">تحديث الموقع</string>
+    <string name="privacy_terms">الخصوصية - الأحكام</string>
 
 </resources>

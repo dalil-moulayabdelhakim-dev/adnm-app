@@ -51,6 +51,50 @@
 
         <Space
             android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#E0E0E0">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnRefreshLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="12dp"
+                    android:src="@drawable/ic_location"
+                    app:fabSize="mini"
+                    app:tint="@color/white"
+                    android:contentDescription="@string/refresh_location" />
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/verify_location"
+            android:textColor="@color/green"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textStyle="italic"/>
+
+        <Space
+            android:layout_width="match_parent"
             android:layout_height="24dp" />
 
         <com.google.android.material.card.MaterialCardView

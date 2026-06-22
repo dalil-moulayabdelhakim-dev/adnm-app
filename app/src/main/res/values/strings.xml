@@ -213,4 +213,9 @@
 
     <string name="powered_by">Powered by DLDevelopment</string>
 
+    <string name="verify_location">Please verify your location on the map</string>
+    <string name="refresh_location">Refresh Location</string>
+    <string name="recaptcha" translatable="false">reCAPTCHA</string>
+    <string name="privacy_terms">Privacy - Terms</string>
+
 </resources>

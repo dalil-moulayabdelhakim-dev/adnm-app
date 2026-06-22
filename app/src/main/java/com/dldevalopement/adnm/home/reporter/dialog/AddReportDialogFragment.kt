@@ -37,6 +37,12 @@ import com.dldevalopement.adnm.databinding.DialogAddReportBinding
 import com.dldevalopement.adnm.home.reporter.WasteType
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -47,7 +53,7 @@ import java.util.Locale
  * It manages UI, API calls, and location services.
  * @param context The context of the calling activity.
  */
-class AddReportDialogFragment(private val context: Context) : DialogFragment() {
+class AddReportDialogFragment(private val context: Context) : DialogFragment(), OnMapReadyCallback {
 
     // View binding instance for safe access to views
     private var _binding: DialogAddReportBinding? = null
@@ -72,6 +78,7 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
 
     private val wasteStatusViews = HashMap<Int, TextView>()
 
+    private var googleMap: GoogleMap? = null
 
     /**
      * An interface to define a callback for when the report's status is changed.
@@ -98,6 +105,10 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
         // Inflate the layout for this dialog fragment
         _binding = DialogAddReportBinding.inflate(LayoutInflater.from(context))
 
+        // Initialize MapView
+        binding.mapView.onCreate(savedInstanceState)
+        binding.mapView.getMapAsync(this)
+
         // Initialize the location client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
@@ -111,6 +122,10 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
 
         binding.recaptchaCheckbox.setOnClickListener {
             verify(context, binding.recaptchaProgressbar, binding.recaptchaCheckbox, binding.errorIc)
+        }
+
+        binding.btnRefreshLocation.setOnClickListener {
+            getCurrentLocation(true)
         }
 
         // Build and return the AlertDialog
@@ -138,6 +153,21 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
         }
 
         return dialog
+    }
+
+    override fun onMapReady(map: GoogleMap) {
+        googleMap = map
+        googleMap?.uiSettings?.isMyLocationButtonEnabled = false
+        updateMapLocation()
+    }
+
+    private fun updateMapLocation() {
+        if (googleMap != null && currentLat != null && currentLng != null) {
+            val userLatLng = LatLng(currentLat!!, currentLng!!)
+            googleMap?.clear()
+            googleMap?.addMarker(MarkerOptions().position(userLatLng).title("Your Location"))
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 17f))
+        }
     }
 
     /**
@@ -168,7 +198,7 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
                         wasteTypes = tempList.sortedBy { it.id }
 
                         // ننظف الكونتينر قبل ما نضيفو
-                        binding.checkboxContainer.removeAllViews()
+                        _binding?.checkboxContainer?.removeAllViews()
 
                         // تحديد لغة الجهاز الحالية
                         val currentLang = Locale.getDefault().language
@@ -255,7 +285,7 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
                             layout.addView(statusText) // يظهر بعد التشيك بوكس (على يسار الأيقونة)
                             layout.addView(imgButton)  // يظهر في أقصى اليمين
 
-                            binding.checkboxContainer.addView(layout)
+                            _binding?.checkboxContainer?.addView(layout)
                         }
 
                     } else {
@@ -288,10 +318,10 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
     }
 
     /**
-     * Fetches the user's last known location. It requests permission if not granted and
+     * Fetches the user's current location. It requests permission if not granted and
      * checks if GPS is enabled.
      */
-    private fun getCurrentLocation() {
+    private fun getCurrentLocation(isRefresh: Boolean = false) {
         // Check for location permissions
         if (ActivityCompat.checkSelfPermission(
                 context,
@@ -310,14 +340,32 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
         if (!GPSUtils.isGPSEnabled(context)) {
             GPSUtils.showGPSDialog(context)
         } else {
-            // Get the last known location and store it
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        currentLat = location.latitude
-                        currentLng = location.longitude
+            if (isRefresh) {
+                Toast.makeText(context, context.getString(R.string.please_wait), Toast.LENGTH_SHORT).show()
+                fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+                    .addOnSuccessListener { location: Location? ->
+                        if (location != null) {
+                            currentLat = location.latitude
+                            currentLng = location.longitude
+                            updateMapLocation()
+                        } else {
+                             Toast.makeText(context, context.getString(R.string.couldnt_get_location), Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
+            } else {
+                // Get the last known location and store it
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location: Location? ->
+                        if (location != null) {
+                            currentLat = location.latitude
+                            currentLng = location.longitude
+                            updateMapLocation()
+                        } else {
+                            // If last location is null, try getting a fresh one
+                            getCurrentLocation(true)
+                        }
+                    }
+            }
         }
     }
 
@@ -418,7 +466,7 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
                     progressBar.visibility = View.GONE
                     checkBox.visibility = View.VISIBLE
                     checkBox.isEnabled = false
-                    binding.recaptchaButton.isEnabled = false
+                    _binding?.recaptchaButton?.isEnabled = false
                 } else {
                     // If verification failed, show error message
                     progressBar.visibility = View.GONE
@@ -472,6 +520,31 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment() {
     private fun openCameraForWaste(wasteId: Int) {
         currentWasteIdForPhoto = wasteId
         takePictureLauncher.launch(null)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        _binding?.mapView?.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        _binding?.mapView?.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding?.mapView?.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        _binding?.mapView?.onLowMemory()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        _binding?.mapView?.onSaveInstanceState(outState)
     }
 
     /**

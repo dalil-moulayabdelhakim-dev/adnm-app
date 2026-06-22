@@ -56,6 +56,8 @@
     <string name="start_collecting">Commencer la collecte</string>
     <string name="collected">Collecté</string>
     <string name="close">Fermer</string>
+    <string name="call">Appeler</string>
+    <string name="drive">Conduire</string>
 
     <!-- Messages -->
     <string name="update_success">%1$s vers %2$s</string>
@@ -156,6 +158,7 @@
 
     <string name="please_wait">S\'il vous plaît, attendez…</string>
     <string name="phone_number">Numéro de téléphone</string>
+    <string name="user_info">Infos Utilisateur</string>
     <string name="error_title">Erreur</string>
     <string name="kg">Kg</string>
 
@@ -210,5 +213,8 @@
     <string name="connection_error">Erreur de connexion</string>
 
     <string name="powered_by">Propulsé par DLDevelopment</string>
+
+    <string name="verify_location">Veuillez vérifier votre position sur la carte</string>
+    <string name="refresh_location">Actualiser la position</string>
 
 </resources>
