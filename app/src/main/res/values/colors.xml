@@ -3,9 +3,20 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <!-- Design Palette -->
+    <color name="primary_green">#2E7D32</color>
+    <color name="accent_green">#43A047</color>
+    <color name="blue_drive">#2563EB</color>
+    <color name="orange_status">#F59E0B</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="text_dark">#1F2937</color>
+    <color name="text_muted">#6B7280</color>
+    <color name="border_color">#E5E7EB</color>
 
+    <!-- Legacy / Project Mappings -->
     <color name="red">#AB2727</color>
-    <color name="green">#488342</color>
+    <color name="green">#2E7D32</color>
     <color name="lightGreen">#F7FFF8</color>
-    <color name="darkGreen">#00921E</color>
+    <color name="darkGreen">#2E7D32</color>
+    <color name="divider_color">#E5E7EB</color>
 </resources>

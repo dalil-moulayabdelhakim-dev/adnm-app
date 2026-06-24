@@ -146,9 +146,14 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment(), 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     Toast.makeText(context, context.getString(R.string.enable_gps), Toast.LENGTH_SHORT).show()
                 } else {
-                        sendReport(currentLat ?: 0.0, currentLng ?: 0.0)
+                    if (currentLat != null && currentLng != null) {
+                        sendReport(currentLat!!, currentLat!!)
+                    } else {
+                        Toast.makeText(context, context.getString(R.string.fetching_location), Toast.LENGTH_SHORT).show()
+
+                        getCurrentLocation()
+                    }
                 }
-                // لاحظ: لا يوجد dismiss() هنا، لذا الديالوج سيبقى مفتوحاً حتى نغلقه نحن يدوياً عند النجاح فقط
             }
         }
 

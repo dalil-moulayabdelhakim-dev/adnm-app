@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ADNM</string>
 
@@ -162,6 +163,9 @@
     <string name="please_wait">Please wait…</string>
     <string name="phone_number">Phone number</string>
     <string name="user_info">User Info</string>
+    <string name="user_name">User name</string>
+    <string name="report_id">Report ID</string>
+    <string name="waste_type">Waste type</string>
     <string name="error_title">Error</string>
     <string name="kg">Kg</string>
 
@@ -217,5 +221,6 @@
     <string name="refresh_location">Refresh Location</string>
     <string name="recaptcha" translatable="false">reCAPTCHA</string>
     <string name="privacy_terms">Privacy - Terms</string>
+    <string name="fetching_location">Fetching location…</string>
 
 </resources>
