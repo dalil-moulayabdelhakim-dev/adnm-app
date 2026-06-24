@@ -217,7 +217,7 @@
     <string name="verify_location">Veuillez vérifier votre position sur la carte</string>
     <string name="refresh_location">Actualiser la position</string>
 
-    <string name="user_name">Nom d'utilisateur</string>
+    <string name="user_name">Nom d\'utilisateur</string>
     <string name="report_id">Identifiant du rapport</string>
     <string name="waste_type">Type de déchet</string>
 
