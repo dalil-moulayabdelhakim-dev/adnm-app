@@ -219,4 +219,10 @@
     <string name="verify_location">يرجى التحقق من موقعك على الخريطة</string>
     <string name="refresh_location">تحديث الموقع</string>
 
+    <string name="user_name">اسم المستخدم</string>
+    <string name="report_id">رقم التقرير</string>
+    <string name="waste_type">نوع النفايات</string>
+
+    <string name="privacy_terms">الخصوصية والشروط</string>
+    <string name="fetching_location">جاري جلب الموقع…</string>
 </resources>
