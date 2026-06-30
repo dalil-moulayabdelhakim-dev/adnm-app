@@ -130,7 +130,10 @@ class ReportInfoDialogFragment(
         val btnPositive = view.findViewById<Button>(R.id.btnPositive)
         val btnClose = view.findViewById<Button>(R.id.btnClose)
 
+        // Drive button only appears when status is in_progress
+        btnDrive.visibility = if (status == "in_progress") View.VISIBLE else View.GONE
         btnDrive.setOnClickListener { openNavigation(lat, lng) }
+
         btnCall.setOnClickListener {
             if (userPhone != "N/A") {
                 startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$userPhone")))

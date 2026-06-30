@@ -144,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="14dp"
-                    android:text="I'm not a robot"
+                    android:text="@string/i_m_not_a_robot"
                     android:textColor="#525252"
                     android:textSize="14sp" />
 
@@ -162,14 +162,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="reCAPTCHA"
+                        android:text="@string/recaptcha"
                         android:textColor="#525252"
                         android:textSize="8sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Privacy - Terms"
+                        android:text="@string/privacy_terms"
                         android:textColor="#525252"
                         android:textSize="7sp" />
                 </LinearLayout>

@@ -202,17 +202,21 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
                             val status = obj.getString("status")
 
                             val markerColor: Float
+                            val zIndex: Float
                             if (status == "in_progress"){
-                                    markerColor = BitmapDescriptorFactory.HUE_ORANGE
+                                markerColor = BitmapDescriptorFactory.HUE_ORANGE
+                                zIndex = 1.0f // Show on top of others
                                 drawRealRoute(lat, lng)
-                            }else {
+                            } else {
                                 markerColor = BitmapDescriptorFactory.HUE_GREEN
+                                zIndex = 0.0f
                             }
 
                             val marker = mMap.addMarker(
                                 MarkerOptions()
                                     .position(LatLng(lat, lng))
                                     .icon(BitmapDescriptorFactory.defaultMarker(markerColor))
+                                    .zIndex(zIndex)
                             )
 
                             // هنا خزّن كل البيانات الخاصة بالبلاغ

@@ -175,8 +175,9 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
 
     /**
      * Fetches the user's reports from the server using a Volley StringRequest.
+     * @param highlightId Optional ID of the report to highlight in the list.
      */
-    private fun fetchReports() {
+    private fun fetchReports(highlightId: Int? = null) {
 
         // Create a GET request to the reports URL
         val request = object : StringRequest(
@@ -207,8 +208,11 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
                             reports.add(report)
                         }
 
+                        // 🔄 Sort reports: in_progress first
+                        val sortedReports = reports.sortedByDescending { it.status == "in_progress" }
+
                         // 🔄 Update the RecyclerView adapter with the new data
-                        reportsAdapter.updateReports(reports)
+                        reportsAdapter.updateReports(sortedReports, highlightId)
                         
                         // Show/Hide empty state
                         if (reports.isEmpty()) {
@@ -217,6 +221,11 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
                         } else {
                             binding.emptyStateLayout.visibility = View.GONE
                             binding.reportsRecyclerView.visibility = View.VISIBLE
+                            
+                            // If we have a highlight ID, scroll to it (it's likely at the top due to status)
+                            if (highlightId != null) {
+                                binding.reportsRecyclerView.scrollToPosition(0)
+                            }
                         }
                         
                     }else{
@@ -289,7 +298,7 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
         }
     }
 
-    override fun onReportStatusChanged() {
-        fetchReports()
+    override fun onReportStatusChanged(newReportId: Int?) {
+        fetchReports(newReportId)
     }
 }

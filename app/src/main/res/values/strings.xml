@@ -222,5 +222,8 @@
     <string name="recaptcha" translatable="false">reCAPTCHA</string>
     <string name="privacy_terms">Privacy - Terms</string>
     <string name="fetching_location">Fetching location…</string>
+    <string name="report_id_hash">Report #%1$d</string>
+    <string name="weight_unit">%1$s Kg</string>
+    <string name="price_da">%1$s DA</string>
 
 </resources>

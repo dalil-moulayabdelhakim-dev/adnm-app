@@ -1,6 +1,8 @@
 package com.dldevalopement.adnm.home.reporter
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +25,8 @@ class ReportsAdapter(
     var reports: List<Report>,
     private val recyclerInterface: RecyclerInterface
 ) : RecyclerView.Adapter<ReportsAdapter.ReportViewHolder>() {
+
+    private var highlightedReportId: Int? = null
 
     // ViewHolder that holds the layout binding for each report item
     inner class ReportViewHolder(
@@ -47,6 +51,15 @@ class ReportsAdapter(
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
         val report = reports[position]
 
+        // ✅ Highlight logic
+        if (report.id == highlightedReportId) {
+            holder.binding.root.setCardBackgroundColor(context.getColor(R.color.lightGreen))
+            holder.binding.root.strokeColor = context.getColor(R.color.primary_green)
+        } else {
+            holder.binding.root.setCardBackgroundColor(context.getColor(R.color.white))
+            holder.binding.root.strokeColor = context.getColor(R.color.border_color)
+        }
+
         // ✅ Display report status
         holder.binding.txtStatus.text = report.status
 
@@ -67,8 +80,18 @@ class ReportsAdapter(
     override fun getItemCount(): Int = reports.size
 
     // Update the list of reports and refresh the RecyclerView
-    fun updateReports(newReports: List<Report>) {
+    fun updateReports(newReports: List<Report>, highlightId: Int? = null) {
         this.reports = newReports
+        this.highlightedReportId = highlightId
         notifyDataSetChanged()
+
+        if (highlightId != null) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                this.highlightedReportId = null
+                // Notify specific item if possible for better performance, 
+                // but notifyDataSetChanged is safe here given the context
+                notifyDataSetChanged()
+            }, 2000)
+        }
     }
 }

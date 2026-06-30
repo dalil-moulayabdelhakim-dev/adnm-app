@@ -85,7 +85,7 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment(), 
      * This allows the calling activity to refresh its UI after the update.
      */
     interface ReportStatusListener {
-        fun onReportStatusChanged()
+        fun onReportStatusChanged(newReportId: Int? = null)
     }
 
     private var listener: ReportStatusListener? = null
@@ -147,7 +147,7 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment(), 
                     Toast.makeText(context, context.getString(R.string.enable_gps), Toast.LENGTH_SHORT).show()
                 } else {
                     if (currentLat != null && currentLng != null) {
-                        sendReport(currentLat!!, currentLat!!)
+                        sendReport(currentLat!!, currentLng!!)
                     } else {
                         Toast.makeText(context, context.getString(R.string.fetching_location), Toast.LENGTH_SHORT).show()
 
@@ -425,7 +425,15 @@ class AddReportDialogFragment(private val context: Context) : DialogFragment(), 
                 // Handle successful response
                 progressDialog.dismiss()
                 Toast.makeText(context, response.optString(MESSAGE, "Report added"), Toast.LENGTH_SHORT).show()
-                listener?.onReportStatusChanged()
+                
+                // Get new report ID if available to highlight it
+                val newReportId = if (response.has(REPORT)) {
+                    response.getJSONObject(REPORT).optInt(ID, -1)
+                } else {
+                    response.optInt("report_id", -1)
+                }
+                
+                listener?.onReportStatusChanged(if (newReportId != -1) newReportId else null)
                 dismiss()
             },
             { error ->

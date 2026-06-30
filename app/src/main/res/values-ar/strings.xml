@@ -220,9 +220,12 @@
     <string name="refresh_location">تحديث الموقع</string>
 
     <string name="user_name">اسم المستخدم</string>
-    <string name="report_id">رقم التقرير</string>
+    <string name="report_id">معرف البلاغ</string>
     <string name="waste_type">نوع النفايات</string>
-
-    <string name="privacy_terms">الخصوصية والشروط</string>
+    <string name="privacy_terms">الخصوصية - الشروط</string>
     <string name="fetching_location">جاري جلب الموقع…</string>
+    <string name="report_id_hash">بلاغ #%1$d</string>
+    <string name="weight_unit">%1$s كغ</string>
+    <string name="price_da">%1$s دج</string>
+
 </resources>
