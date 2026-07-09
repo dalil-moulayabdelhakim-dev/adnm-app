@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -222,9 +223,12 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
                             binding.emptyStateLayout.visibility = View.GONE
                             binding.reportsRecyclerView.visibility = View.VISIBLE
                             
-                            // If we have a highlight ID, scroll to it (it's likely at the top due to status)
+                            // 🎯 Scroll to the correct position of the highlighted report
                             if (highlightId != null) {
-                                binding.reportsRecyclerView.scrollToPosition(0)
+                                val position = sortedReports.indexOfFirst { it.id == highlightId }
+                                if (position != -1) {
+                                    binding.reportsRecyclerView.smoothScrollToPosition(position)
+                                }
                             }
                         }
                         
@@ -294,6 +298,7 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
             outputFormat.format(date!!)
         } catch (e: Exception) {
             // Fallback: return the original string if there's an error
+            e.message?.let { Log.e("FORMAT_DATA", it) }
             isoString
         }
     }

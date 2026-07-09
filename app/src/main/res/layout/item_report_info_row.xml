@@ -28,7 +28,7 @@
             android:id="@+id/tvLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Label"
+            android:text="@string/label_placeholder"
             android:textColor="#9E9E9E"
             android:textSize="12sp" />
 
@@ -36,7 +36,7 @@
             android:id="@+id/tvValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Value"
+            android:text="@string/value_placeholder"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />

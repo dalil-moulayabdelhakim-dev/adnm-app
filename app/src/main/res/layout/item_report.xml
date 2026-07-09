@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="12dp"
@@ -28,7 +29,7 @@
                 android:id="@+id/txtTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.00 DA"
+                tools:text="0.00 DA"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#212121" />
@@ -51,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="2024-05-20"
+                    tools:text="2024-05-20"
                     android:textSize="12sp"
                     android:textColor="#9E9E9E" />
             </LinearLayout>
@@ -61,7 +62,7 @@
             android:id="@+id/txtStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status"
+            tools:text="Status"
             android:textSize="11sp"
             android:textStyle="bold"
             android:textColor="@color/green"

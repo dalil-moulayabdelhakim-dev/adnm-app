@@ -21,6 +21,7 @@ import com.dldevalopement.adnm.database.TOKEN
 import com.dldevalopement.adnm.databinding.ActivitySplashScreenBinding
 import com.dldevalopement.adnm.home.CollectorActivity
 import com.dldevalopement.adnm.home.ReporterActivity
+import java.util.Locale
 
 class SplashScreen : AppCompatActivity() {
 
@@ -53,8 +54,9 @@ class SplashScreen : AppCompatActivity() {
                 val playStoreUrl = response.optString("play_store_url")
                 val serverUrl = response.optString("server_download_url")
 
-                // استخدام النص من السيرفر أو النص الافتراضي من الموارد
-                val message = response.optString("message", getString(R.string.default_update_message))
+                // Parse the localized message based on the current app language
+                val rawMessage = response.optString("message", getString(R.string.default_update_message))
+                val message = parseLocalizedMessage(rawMessage)
 
                 val currentVersionCode = BuildConfig.VERSION_CODE
 
@@ -69,6 +71,33 @@ class SplashScreen : AppCompatActivity() {
             }
         )
         Volley.newRequestQueue(this).add(request)
+    }
+
+    /**
+     * Parses the localized message from the server response based on the current app language.
+     * The message is expected to contain tags like <en-US>, <ar>, <fr-FR>.
+     */
+    private fun parseLocalizedMessage(message: String): String {
+        val lang = Locale.getDefault().language
+        val tag = when (lang) {
+            "ar" -> "ar"
+            "fr" -> "fr-FR"
+            else -> "en-US"
+        }
+
+        // Regex to extract content between <tag> and </tag> or the next <tag>
+        // (?s) allows the dot to match newlines
+        val pattern = "(?s)<$tag>(.*?)(?:</$tag>|(?=<)|$)"
+        val match = Regex(pattern).find(message)
+
+        return if (match != null) {
+            match.groupValues[1].trim()
+        } else {
+            // Fallback to English if the specific language is not found
+            val enPattern = "(?s)<en-US>(.*?)(?:</en-US>|(?=<)|$)"
+            val enMatch = Regex(enPattern).find(message)
+            enMatch?.groupValues?.get(1)?.trim() ?: message.replace(Regex("<[^>]*>"), "").trim()
+        }
     }
 
     private fun showUpdateDialog(playUrl: String, serverUrl: String, message: String, isRequired: Boolean) {

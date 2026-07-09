@@ -13,7 +13,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Report #104"
+        tools:text="Report #104"
         android:textColor="@color/text_dark"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -29,7 +29,7 @@
         android:backgroundTint="@color/orange_status"
         android:paddingHorizontal="12dp"
         android:paddingVertical="4dp"
-        android:text="In Progress"
+        tools:text="In Progress"
         android:textColor="@color/white"
         android:textSize="12sp"
         android:textStyle="bold"
@@ -102,7 +102,7 @@
                             android:id="@+id/tvReportIdValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="104"
+                            tools:text="104"
                             android:textColor="@color/text_dark"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -205,7 +205,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/blue_drive"
                 app:cornerRadius="12dp"
-                app:icon="@drawable/ic_car"
+                app:icon="@drawable/ic_location"
                 app:iconTint="@color/blue_drive"
                 app:strokeColor="@color/blue_drive" />
 

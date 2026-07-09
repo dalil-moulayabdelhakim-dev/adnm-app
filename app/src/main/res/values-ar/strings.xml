@@ -195,7 +195,7 @@
     <string name="update_now">تحديث الآن</string>
     <string name="exit_app">إغلاق التطبيق</string>
     <string name="later">ليس الآن</string>
-    <string name="play_store_not_found">متجر بلاي غير متوفر، جاري التحميل من السيرفر...</string>
+    <string name="play_store_not_found">متجر بلاي غير متوفر، جاري التحميل من السيرفر…</string>
     <string name="update_failed_app">فشل الوصول إلى روابط التحديث</string>
     <string name="role_not_found">لم يتم العثور على دور المستخدم</string>
 
@@ -227,5 +227,9 @@
     <string name="report_id_hash">بلاغ #%1$d</string>
     <string name="weight_unit">%1$s كغ</string>
     <string name="price_da">%1$s دج</string>
+    <string name="app_version_format">(%1$d) V%2$s</string>
+    <string name="empty_placeholder">---</string>
+    <string name="label_placeholder">العنوان</string>
+    <string name="value_placeholder">القيمة</string>
 
 </resources>

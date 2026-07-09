@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
@@ -19,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Plastic"
+            tools:text="Plastic"
             android:layout_marginEnd="15dp"
             android:textStyle="bold"
             android:textSize="16sp" />
@@ -29,7 +30,7 @@
             android:id="@+id/text_waste_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2 kg"
+            tools:text="2 kg"
             android:layout_marginEnd="15dp"
             android:textSize="15sp"
             android:textColor="@color/green" />
@@ -39,7 +40,7 @@
             android:id="@+id/text_waste_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="200 DA"
+            tools:text="200 DA"
             android:textSize="15sp"
             android:textColor="@color/green" />
 

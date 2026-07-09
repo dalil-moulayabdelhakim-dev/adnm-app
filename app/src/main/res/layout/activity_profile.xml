@@ -74,7 +74,7 @@
                 android:id="@+id/profile_name_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="---"
+                android:text="@string/empty_placeholder"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -87,7 +87,7 @@
                 android:background="@drawable/bg_rounded_border_light"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="4dp"
-                android:text="---"
+                android:text="@string/empty_placeholder"
                 android:textAllCaps="true"
                 android:textColor="@color/green"
                 android:textSize="12sp"
@@ -139,7 +139,7 @@
                                 android:id="@+id/profile_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="---"
+                                android:text="@string/empty_placeholder"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
                                 android:fontFamily="sans-serif-medium" />
@@ -183,7 +183,7 @@
                                 android:id="@+id/profile_email"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="---"
+                                android:text="@string/empty_placeholder"
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
                         </LinearLayout>
@@ -226,7 +226,7 @@
                                 android:id="@+id/profile_phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="---"
+                                android:text="@string/empty_placeholder"
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
                         </LinearLayout>

@@ -1,10 +1,10 @@
 package com.dldevalopement.adnm.home.reporter
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dldevalopement.adnm.R
@@ -30,13 +30,15 @@ class ReportsAdapter(
 
     // ViewHolder that holds the layout binding for each report item
     inner class ReportViewHolder(
-        val binding: ItemReportBinding,
-        recyclerInterface: RecyclerInterface
+        val binding: ItemReportBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             // Handle item click event
             binding.root.setOnClickListener {
-                recyclerInterface.onItemClick(adapterPosition)
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    recyclerInterface.onItemClick(pos)
+                }
             }
         }
     }
@@ -44,20 +46,22 @@ class ReportsAdapter(
     // Inflate the item layout and create the ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val binding = ItemReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ReportViewHolder(binding, recyclerInterface)
+        return ReportViewHolder(binding)
     }
 
     // Bind report data to the item layout
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
         val report = reports[position]
 
-        // ✅ Highlight logic
+        // ✅ Enhanced highlight logic with ColorStateList for MaterialCardView compatibility
         if (report.id == highlightedReportId) {
-            holder.binding.root.setCardBackgroundColor(context.getColor(R.color.lightGreen))
-            holder.binding.root.strokeColor = context.getColor(R.color.primary_green)
+            holder.binding.root.setCardBackgroundColor(ColorStateList.valueOf(context.getColor(R.color.accent_green)))
+            holder.binding.root.setStrokeColor(ColorStateList.valueOf(context.getColor(R.color.primary_green)))
+            holder.binding.root.strokeWidth = 8 // Strong visual indicator
         } else {
-            holder.binding.root.setCardBackgroundColor(context.getColor(R.color.white))
-            holder.binding.root.strokeColor = context.getColor(R.color.border_color)
+            holder.binding.root.setCardBackgroundColor(ColorStateList.valueOf(context.getColor(R.color.white)))
+            holder.binding.root.setStrokeColor(ColorStateList.valueOf(context.getColor(R.color.border_color)))
+            holder.binding.root.strokeWidth = 2
         }
 
         // ✅ Display report status
@@ -65,11 +69,10 @@ class ReportsAdapter(
 
         // ✅ Display total price if available, otherwise hide the field
         if (report.totalPrice != null) {
-            holder.binding.txtTotal.text =
-                "${report.totalPrice} ${context.getString(R.string.da)}"
-            holder.binding.txtTotal.visibility = View.VISIBLE
+            holder.binding.txtTotal.text = context.getString(R.string.price_da, report.totalPrice.toString())
+            holder.binding.txtTotal.visibility = android.view.View.VISIBLE
         } else {
-            holder.binding.txtTotal.visibility = View.GONE
+            holder.binding.txtTotal.visibility = android.view.View.GONE
         }
 
         // ✅ Display creation date
@@ -87,10 +90,15 @@ class ReportsAdapter(
 
         if (highlightId != null) {
             Handler(Looper.getMainLooper()).postDelayed({
+                val oldId = this.highlightedReportId
                 this.highlightedReportId = null
-                // Notify specific item if possible for better performance, 
-                // but notifyDataSetChanged is safe here given the context
-                notifyDataSetChanged()
+                // Find position of the previously highlighted item to refresh it specifically
+                val pos = reports.indexOfFirst { it.id == oldId }
+                if (pos != -1) {
+                    notifyItemChanged(pos)
+                } else {
+                    notifyDataSetChanged()
+                }
             }, 2000)
         }
     }

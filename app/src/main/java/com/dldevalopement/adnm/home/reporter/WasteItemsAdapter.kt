@@ -48,11 +48,10 @@ class WasteItemsAdapter(
      */
     override fun onBindViewHolder(holder: WasteViewHolder, position: Int) {
         val item = wasteItems[position]
+        val context = holder.itemView.context
         holder.binding.textWasteName.text = item.wasteType
-        holder.binding.textWasteWeight.text =
-            "${item.weight} ${holder.itemView.context.getString(R.string.kg)}"
-        holder.binding.textWastePrice.text =
-            "${item.totalPrice} ${holder.itemView.context.getString(R.string.da)}"
+        holder.binding.textWasteWeight.text = context.getString(R.string.weight_unit, item.weight.toString())
+        holder.binding.textWastePrice.text = context.getString(R.string.price_da, item.totalPrice.toString())
     }
 
     /**
