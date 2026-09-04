@@ -2,17 +2,31 @@ package com.dldevalopement.adnm.home
 
 // Import necessary Android, Google Maps, Volley, and local classes
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.dldevalopement.adnm.GPSUtils
@@ -21,8 +35,10 @@ import com.dldevalopement.adnm.ProfileActivity
 import com.dldevalopement.adnm.R
 import com.dldevalopement.adnm.database.*
 import com.dldevalopement.adnm.databinding.ActivityCollectorBinding
-import com.dldevalopement.adnm.home.collector.dialog.ReportInfoDialogFragment
+import com.dldevalopement.adnm.manager.AdManager
 import com.dldevalopement.adnm.manager.AuthManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,17 +48,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import org.json.JSONArray
 import org.json.JSONObject
 
 /**
  * Main activity for the 'Collector' role.
  * This activity displays a map with reported waste locations and manages user interactions.
- * It implements OnMapReadyCallback to handle map initialization and ReportDialogFragment.ReportStatusListener
- * to handle updates from the dialog.
+ * It implements OnMapReadyCallback to handle map initialization.
  */
-class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
-    ReportInfoDialogFragment.ReportStatusListener {
+class CollectorActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // View binding instance for safe access to views
     private lateinit var _binding: ActivityCollectorBinding
@@ -53,6 +69,12 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
     // Client for retrieving the user's last known location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    // Persistent Bottom Sheet Behavior
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private val weightInputs = mutableMapOf<String, EditText>()
+    private val wasteTypesID = mutableListOf<String>()
+    private val wasteTypesNames = mutableListOf<String>()
+
     /**
      * Called when the activity is first created.
      * Initializes the UI and sets up the map.
@@ -62,11 +84,17 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
         _binding = ActivityCollectorBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.coordinatorLayout) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Initialize AdMob
+        AdManager.initialize(this)
+        // Create and add the banner ad to the container
+        val adView = AdManager.createBannerAd(this)
+        binding.adContainer.addView(adView)
 
         // Set a click listener for the logout button
         binding.logoutButton.setOnClickListener {
@@ -87,6 +115,19 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
         // Set up the map fragment and get the map asynchronously
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        // Initialize Persistent Bottom Sheet
+        setupBottomSheet()
+    }
+
+    /**
+     * Initializes the persistent bottom sheet behavior and its initial state.
+     */
+    private fun setupBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetLayout.root)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior.isHideable = true
+        bottomSheetBehavior.peekHeight = 0
     }
 
     /**
@@ -131,6 +172,20 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onMapReady(googleMap: GoogleMap) {
         Log.i("MAP", "map ready")
         mMap = googleMap
+
+        // Apply custom map style (Light Green Theme)
+        try {
+            val success = mMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.map_style
+                )
+            )
+            if (!success) {
+                Log.e("MAP", "Style parsing failed.")
+            }
+        } catch (e: Exception) {
+            Log.e("MAP", "Can't find style. Error: ", e)
+        }
 
         // Enable zoom controls and check for location permission to enable my-location layer
         mMap.uiSettings.isZoomControlsEnabled = true
@@ -195,11 +250,17 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
                     if (success) {
                         Log.i("DATA", "DONE")
                         val jsonArray = jsonObject.getJSONArray(REPORTS)
+                        var inProgressReport: JSONObject? = null
+
                         for (i in 0 until jsonArray.length()) {
                             val obj = jsonArray.getJSONObject(i)
                             val lat = obj.getDouble("latitude")
                             val lng = obj.getDouble("longitude")
                             val status = obj.getString("status")
+
+                            if (status == "in_progress") {
+                                inProgressReport = obj
+                            }
 
                             val markerColor: Float
                             val zIndex: Float
@@ -222,13 +283,16 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
                             // هنا خزّن كل البيانات الخاصة بالبلاغ
                             marker?.tag = obj
                         }
-// listener
+
+                        // Automatically open bottom sheet if an in-progress report is found
+                        inProgressReport?.let {
+                            bindReportToSheet(it)
+                        }
+
+                        // marker listener
                         mMap.setOnMarkerClickListener { marker ->
                             val obj = marker.tag as? JSONObject ?: return@setOnMarkerClickListener true
-
-                            val dialog = ReportInfoDialogFragment(this, obj)
-                            dialog.setReportStatusListener(this)
-                            dialog.show(supportFragmentManager, "ReportInfoDialog")
+                            bindReportToSheet(obj)
                             true
                         }
                     } else {
@@ -261,6 +325,196 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
                 headers[ACCEPT] = APPLICATION_JSON
                 headers[AUTHORIZATION] = "$BEARER ${sharedPreferences.getString(TOKEN, null)}"
                 return headers
+            }
+        }
+        Volley.newRequestQueue(this).add(request)
+    }
+
+    /**
+     * Binds report data to the persistent bottom sheet and shows it.
+     */
+    private fun bindReportToSheet(reportJson: JSONObject) {
+        val sheetView = binding.bottomSheetLayout.root
+        val id = reportJson.optInt("id")
+        val status = reportJson.optString("status")
+        val lat = reportJson.optString("latitude")
+        val lng = reportJson.optString("longitude")
+
+        // Reset inputs
+        weightInputs.clear()
+        wasteTypesID.clear()
+        wasteTypesNames.clear()
+
+        // UI Binding
+        sheetView.findViewById<TextView>(R.id.tvTitle).text = "${getString(R.string.report)} #$id"
+        sheetView.findViewById<TextView>(R.id.tvReportIdValue).text = id.toString()
+        
+        val tvStatusBadge = sheetView.findViewById<TextView>(R.id.tvStatusBadge)
+        tvStatusBadge.text = status.replace("_", " ").replaceFirstChar { it.uppercase() }
+        
+        when (status) {
+            "accepted" -> tvStatusBadge.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.blue_drive))
+            "in_progress" -> tvStatusBadge.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.orange_status))
+            "collected" -> tvStatusBadge.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.primary_green))
+        }
+
+        // Expand/Collapse Logic
+        val layoutIdHeader = sheetView.findViewById<LinearLayout>(R.id.layoutIdHeader)
+        val layoutCollapsibleInfo = sheetView.findViewById<LinearLayout>(R.id.layoutCollapsibleInfo)
+        val ivDropdownArrow = sheetView.findViewById<ImageView>(R.id.ivDropdownArrow)
+        
+        layoutCollapsibleInfo.visibility = View.GONE
+        ivDropdownArrow.rotation = 90f
+
+        layoutIdHeader.setOnClickListener {
+            val isVisible = layoutCollapsibleInfo.visibility == View.VISIBLE
+            TransitionManager.beginDelayedTransition(sheetView as ViewGroup)
+            layoutCollapsibleInfo.visibility = if (isVisible) View.GONE else View.VISIBLE
+            ivDropdownArrow.animate().rotation(if (isVisible) 90f else 270f).start()
+        }
+
+        setupRow(sheetView.findViewById(R.id.rowId), R.drawable.ic_hash, getString(R.string.id), id.toString())
+        setupRow(sheetView.findViewById(R.id.rowStatus), R.drawable.ic_check, getString(R.string.status), status.replace("_", " ").replaceFirstChar { it.uppercase() })
+
+        val userObj = reportJson.optJSONObject("user")
+        val userName = userObj?.let { "${it.optString("name")} ${it.optString("last_name")}" } ?: "N/A"
+        val userPhone = userObj?.optString("phone_number") ?: "N/A"
+
+        setupRow(sheetView.findViewById(R.id.rowName), R.drawable.ic_person, getString(R.string.user_name), userName)
+        setupRow(sheetView.findViewById(R.id.rowPhone), R.drawable.ic_phone, getString(R.string.phone_number), userPhone)
+
+        val containerWasteTypes = sheetView.findViewById<LinearLayout>(R.id.containerWasteTypes)
+        val containerWeightInputs = sheetView.findViewById<LinearLayout>(R.id.containerWeightInputs)
+        containerWasteTypes.removeAllViews()
+        containerWeightInputs.removeAllViews()
+
+        val wasteArray = reportJson.optJSONArray("waste_types") ?: JSONArray()
+        for (i in 0 until wasteArray.length()) {
+            val wasteObj = wasteArray.getJSONObject(i)
+            val wId = wasteObj.optString("id")
+            val wType = wasteObj.optString("type", "Waste Type")
+            
+            wasteTypesID.add(wId)
+            wasteTypesNames.add(wType)
+
+            val rowView = LayoutInflater.from(this).inflate(R.layout.item_report_info_row, containerWasteTypes, false)
+            setupRow(rowView, R.drawable.ic_trash, getString(R.string.type), wType)
+            containerWasteTypes.addView(rowView)
+
+            if (status == "in_progress") {
+                val weightInputView = LayoutInflater.from(this).inflate(R.layout.item_weight_input, containerWeightInputs, false)
+                val tilWeight = weightInputView.findViewById<TextInputLayout>(R.id.tilWeight)
+                val etWeight = weightInputView.findViewById<EditText>(R.id.etWeight)
+                
+                tilWeight.hint = "${getString(R.string.please_enter_weight)} $wType"
+                weightInputs[wType] = etWeight
+                containerWeightInputs.addView(weightInputView)
+            }
+        }
+
+        // Action Buttons
+        val btnDrive = sheetView.findViewById<Button>(R.id.btnDrive)
+        val btnCall = sheetView.findViewById<Button>(R.id.btnCall)
+        val btnPositive = sheetView.findViewById<Button>(R.id.btnPositive)
+        val btnClose = sheetView.findViewById<Button>(R.id.btnClose)
+        val btnLocate = sheetView.findViewById<Button>(R.id.btnLocate)
+
+        btnLocate.setOnClickListener {
+            val reportLatLng = LatLng(lat.toDouble(), lng.toDouble())
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(reportLatLng, 17f))
+        }
+
+        btnDrive.visibility = if (status == "in_progress") View.VISIBLE else View.GONE
+        btnDrive.setOnClickListener { openNavigation(lat, lng) }
+
+        btnCall.setOnClickListener {
+            if (userPhone != "N/A") {
+                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$userPhone")))
+            }
+        }
+        btnClose.setOnClickListener { bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN }
+
+        when (status) {
+            "accepted" -> {
+                btnPositive.visibility = View.VISIBLE
+                btnPositive.text = getString(R.string.start_collecting)
+                btnPositive.setOnClickListener { updateReportStatus(id, "in_progress", JSONArray()) }
+            }
+            "in_progress" -> {
+                btnPositive.visibility = View.VISIBLE
+                btnPositive.text = getString(R.string.collected)
+                btnPositive.setOnClickListener {
+                    val wastes = collectWeights()
+                    if (wastes != null) {
+                        updateReportStatus(id, "collected", wastes)
+                    }
+                }
+            }
+            else -> btnPositive.visibility = View.GONE
+        }
+
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    private fun setupRow(view: View, iconRes: Int, label: String, value: String) {
+        view.findViewById<ImageView>(R.id.ivIcon).setImageResource(iconRes)
+        view.findViewById<TextView>(R.id.tvLabel).text = label
+        view.findViewById<TextView>(R.id.tvValue).text = value
+    }
+
+    private fun openNavigation(lat: String, lng: String?) {
+        if (lat != "0.0000000" && lng != "0.0000000" && lng != null) {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=$lat,$lng&mode=d"))
+            intent.setPackage("com.google.android.apps.maps")
+            try {
+                startActivity(intent)
+            } catch (e: Exception) {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving")))
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.not_available), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun collectWeights(): JSONArray? {
+        val wastesArray = JSONArray()
+        for (i in wasteTypesID.indices) {
+            val wType = wasteTypesNames[i]
+            val value = weightInputs[wType]?.text.toString().trim()
+            if (value.isEmpty()) {
+                Toast.makeText(this, "${getString(R.string.please_enter_weight)} $wType", Toast.LENGTH_SHORT).show()
+                return null
+            }
+            val wasteObj = JSONObject().apply {
+                put("id", wasteTypesID[i])
+                put("weight", value.toDouble())
+            }
+            wastesArray.put(wasteObj)
+        }
+        return wastesArray
+    }
+
+    private fun updateReportStatus(id: Int, newStatus: String, wastes: JSONArray?) {
+        val body = JSONObject().apply {
+            put("report_id", id)
+            put("status", newStatus)
+            put("wastes", wastes ?: JSONArray())
+        }
+
+        val request = object : JsonObjectRequest(Method.POST, COLLECTOR_UPDATE_STATUS_URL, body,
+            Response.Listener { response ->
+                if (response.optBoolean(SUCCESS)) {
+                    loadReports()
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                } else {
+                    Toast.makeText(this, response.optString(MESSAGE), Toast.LENGTH_SHORT).show()
+                }
+            },
+            Response.ErrorListener { bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val token = getSharedPreferences(DATA, Context.MODE_PRIVATE).getString(TOKEN, "")
+                return mutableMapOf(AUTHORIZATION to "$BEARER $token", "Accept" to "application/json")
             }
         }
         Volley.newRequestQueue(this).add(request)
@@ -339,15 +593,5 @@ class CollectorActivity : AppCompatActivity(), OnMapReadyCallback,
         Log.d("CollectorMap", "loadReports called")
         mMap.clear()
         fetchReports()
-    }
-
-    /**
-     * Callback method from the ReportDialogFragment listener.
-     * This is triggered when a report's status is successfully changed.
-     * It calls `loadReports` to refresh the map with the latest data.
-     */
-    override fun onReportStatusChanged() {
-        Log.d("CollectorMap", "onReportStatusChanged called")
-        loadReports()
     }
 }

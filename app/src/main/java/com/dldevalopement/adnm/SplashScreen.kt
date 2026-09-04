@@ -57,6 +57,8 @@ class SplashScreen : AppCompatActivity() {
                 // Parse the localized message based on the current app language
                 val rawMessage = response.optString("message", getString(R.string.default_update_message))
                 val message = parseLocalizedMessage(rawMessage)
+                Log.i("MESSAGE", "$message")
+                Log.i("VERSION CODE", "$minVersionCode")
 
                 val currentVersionCode = BuildConfig.VERSION_CODE
 

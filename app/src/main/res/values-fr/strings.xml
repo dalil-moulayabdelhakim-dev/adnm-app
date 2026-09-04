@@ -229,5 +229,6 @@
     <string name="empty_placeholder">---</string>
     <string name="label_placeholder">Libellé</string>
     <string name="value_placeholder">Valeur</string>
+    <string name="locate">Situer</string>
 
 </resources>

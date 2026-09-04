@@ -5,15 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightGreen"
+    android:background="@color/background"
     tools:context=".RegisterActivity">
 
     <ImageView
         android:layout_width="400dp"
         android:layout_height="400dp"
-        android:layout_marginLeft="-180dp"
+        android:layout_marginStart="-180dp"
         android:layout_marginTop="-120dp"
-        android:alpha="0.08"
+        android:alpha="0.05"
         android:src="@drawable/adnm_logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,9 +21,9 @@
     <ImageView
         android:layout_width="400dp"
         android:layout_height="400dp"
-        android:alpha="0.08"
+        android:alpha="0.05"
         android:src="@drawable/adnm_logo"
-        android:layout_marginRight="-180dp"
+        android:layout_marginEnd="-180dp"
         android:layout_marginBottom="-120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -37,211 +37,220 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingVertical="40dp">
+            android:orientation="vertical"
+            android:padding="24dp">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="5dp"
-                android:layout_margin="20dp">
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/surfaceVariant"
+                app:cardBackgroundColor="@color/surface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="24dp">
 
                     <ImageView
                         android:id="@+id/imageView"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:layout_marginTop="10dp"
                         android:src="@drawable/adnm_logo" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:text="@string/register"
-                        android:textSize="26sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/green"/>
+                        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                        android:textColor="@color/primary"
+                        android:textStyle="bold" />
 
-                    <Space
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/last_name_layout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="25dp" />
-
-                    <EditText
-                        android:id="@+id/last_name_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:layout_marginHorizontal="15dp"
-                        android:background="@drawable/shape_feilds"
-                        android:drawableStart="@drawable/ic_name"
-                        android:drawablePadding="10dp"
-                        android:drawableTint="@color/green"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
                         android:hint="@string/last_name"
-                        android:inputType="textPersonName"
-                        android:paddingHorizontal="15dp"
-                        android:textSize="16sp" />
+                        app:startIconDrawable="@drawable/ic_name"
+                        app:startIconTint="@color/primary">
 
-                    <Space android:layout_width="match_parent" android:layout_height="10dp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/last_name_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/name_edit_text"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/name_layout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:layout_marginHorizontal="15dp"
-                        android:background="@drawable/shape_feilds"
-                        android:drawableStart="@drawable/ic_name"
-                        android:drawablePadding="10dp"
-                        android:drawableTint="@color/green"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:hint="@string/name"
-                        android:inputType="textPersonName"
-                        android:paddingHorizontal="15dp"
-                        android:textSize="16sp" />
+                        app:startIconDrawable="@drawable/ic_name"
+                        app:startIconTint="@color/primary">
 
-                    <Space android:layout_width="match_parent" android:layout_height="10dp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/phone_edit_text"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/phone_layout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:layout_marginHorizontal="15dp"
-                        android:background="@drawable/shape_feilds"
-                        android:drawableStart="@drawable/ic_phone"
-                        android:drawablePadding="10dp"
-                        android:drawableTint="@color/green"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:hint="@string/phone_number"
-                        android:inputType="phone"
-                        android:paddingHorizontal="15dp"
-                        android:textSize="16sp" />
+                        app:startIconDrawable="@drawable/ic_phone"
+                        app:startIconTint="@color/primary">
 
-                    <Space android:layout_width="match_parent" android:layout_height="10dp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/phone_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/email_edit_text"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/email_layout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:layout_marginHorizontal="15dp"
-                        android:background="@drawable/shape_feilds"
-                        android:drawableStart="@drawable/ic_email"
-                        android:drawablePadding="10dp"
-                        android:drawableTint="@color/green"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:hint="@string/email"
-                        android:inputType="textEmailAddress"
-                        android:paddingHorizontal="15dp"
-                        android:textSize="16sp" />
+                        app:startIconDrawable="@drawable/ic_email"
+                        app:startIconTint="@color/primary">
 
-                    <Space android:layout_width="match_parent" android:layout_height="10dp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/email_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/password_edit_text"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/password_layout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:layout_marginHorizontal="15dp"
-                        android:background="@drawable/shape_feilds"
-                        android:drawableStart="@drawable/ic_lock"
-                        android:drawablePadding="10dp"
-                        android:drawableTint="@color/green"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:hint="@string/password"
-                        android:inputType="textPassword"
-                        android:paddingHorizontal="15dp"
-                        android:textSize="16sp" />
+                        app:endIconMode="password_toggle"
+                        app:startIconDrawable="@drawable/ic_lock"
+                        app:startIconTint="@color/primary">
 
-                    <Space android:layout_width="match_parent" android:layout_height="10dp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/password_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/confirm_password_edit_text"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/confirm_password_layout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:layout_marginHorizontal="15dp"
-                        android:background="@drawable/shape_feilds"
-                        android:drawableStart="@drawable/ic_lock"
-                        android:drawablePadding="10dp"
-                        android:drawableTint="@color/green"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:hint="@string/confirm_password"
-                        android:inputType="textPassword"
-                        android:paddingHorizontal="15dp"
-                        android:textSize="16sp" />
+                        app:endIconMode="password_toggle"
+                        app:startIconDrawable="@drawable/ic_lock"
+                        app:startIconTint="@color/primary">
 
-                    <Space android:layout_width="match_parent" android:layout_height="20dp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/confirm_password_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <LinearLayout
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/recaptcha_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="15dp"
-                        android:orientation="horizontal"
-                        android:padding="12dp"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/recaptcha_background">
+                        android:layout_marginTop="24dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/surfaceVariant"
+                        app:cardBackgroundColor="@color/background">
 
-                        <ImageView
-                            android:id="@+id/error_ic"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:visibility="gone"
-                            android:src="@drawable/ic_error"/>
-                        <CheckBox
-                            android:id="@+id/recaptcha_checkbox"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minWidth="0dp"
-                            android:minHeight="0dp"/>
+                            android:orientation="horizontal"
+                            android:padding="12dp"
+                            android:gravity="center_vertical">
 
-                        <ProgressBar
-                            android:id="@+id/recaptcha_progressbar"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:visibility="gone"/>
+                            <ImageView
+                                android:id="@+id/error_ic"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:visibility="gone"
+                                android:src="@drawable/ic_error"
+                                app:tint="@color/error"/>
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/i_m_not_a_robot"
-                            android:textColor="@android:color/black"
-                            android:layout_marginStart="8dp"
-                            android:textSize="14sp"/>
+                            <CheckBox
+                                android:id="@+id/recaptcha_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"/>
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/ic_recaptcha" />
-                    </LinearLayout>
+                            <ProgressBar
+                                android:id="@+id/recaptcha_progressbar"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:visibility="gone"/>
 
-                    <Space android:layout_width="match_parent" android:layout_height="24dp" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/i_m_not_a_robot"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                                android:layout_marginStart="8dp"/>
 
-                    <androidx.appcompat.widget.AppCompatButton
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_recaptcha" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/register_button"
+                        style="@style/Widget.Material3.Button"
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:layout_marginHorizontal="30dp"
-                        android:background="@drawable/btn_primary"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="32dp"
                         android:text="@string/register"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        app:cornerRadius="16dp" />
 
-                    <Space android:layout_width="match_parent" android:layout_height="12dp" />
-
-                    <TextView
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/cancel_button"
+                        style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:layout_marginTop="8dp"
                         android:text="@string/cancel"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="16sp"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true" />
+                        android:textColor="@color/onSurfaceVariant" />
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
 
@@ -255,6 +264,6 @@
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/green" />
+        app:tint="@color/primary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

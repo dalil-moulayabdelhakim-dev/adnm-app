@@ -1,26 +1,42 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.ADNM" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <item name="colorSecondary">@color/green</item>
-        <item name="colorPrimary">@color/green</item>
-        <item name="colorPrimaryVariant">@color/green</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <!-- Main Colors -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/onPrimary</item>
+        <item name="colorPrimaryContainer">@color/primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/onPrimaryContainer</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/onSecondary</item>
+        <item name="colorSecondaryContainer">@color/secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/onSecondaryContainer</item>
+        <item name="colorTertiary">@color/tertiary</item>
+        <item name="colorOnTertiary">@color/onTertiary</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/onSurface</item>
+        <item name="colorSurfaceVariant">@color/surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/onSurfaceVariant</item>
+        <item name="colorOutline">@color/outline</item>
 
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:statusBarColor">@color/green</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
     </style>
 
     <style name="dialog" parent="Theme.Material3.Light.Dialog.Alert">
-        <item name="android:windowBackground">@drawable/shape_dialog</item>
+        <item name="android:windowBackground">@drawable/shape_dialog_modern</item>
         <item name="android:windowMinWidthMinor">90%</item>
-        <item name="colorPrimary">@color/green</item>
-        <item name="colorSecondary">@color/green</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorSecondary">@color/secondary</item>
     </style>
 
     <style name="Theme.ADNM" parent="Base.Theme.ADNM" />
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Material3.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>

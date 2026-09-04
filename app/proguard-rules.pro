@@ -1,21 +1,32 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# ADNM Project ProGuard Rules
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# 1. Volley Rules
+-keep class com.android.volley.** { *; }
+-keep interface com.android.volley.** { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# 2. Firebase & GMS Rules (usually handled by AAR, but kept for safety)
+-keep class com.google.android.gms.** { *; }
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.ktx.Firebase
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# 3. Keep Data Models (to avoid issues with JSON parsing)
+-keep class com.dldevalopement.adnm.home.reporter.Report { *; }
+-keep class com.dldevalopement.adnm.home.reporter.WasteItem { *; }
+-keep class com.dldevalopement.adnm.home.reporter.WasteType { *; }
+
+# 4. Standard Android/Kotlin rules
+-keepattributes Signature, *Annotation*, EnclosingMethod, InnerClasses
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+
+# 5. Start.io Rules
+-keep class com.startapp.** { *; }
+-keep class com.truenet.** { *; }
+-dontwarn com.startapp.**
+-dontwarn com.truenet.**
+
+# 6. reCAPTCHA / SafetyNet
+-keep class com.google.android.gms.safetynet.** { *; }
+
+# 7. App Update Library
+-keep class com.google.android.play.core.** { *; }

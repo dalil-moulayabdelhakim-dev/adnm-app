@@ -1,26 +1,32 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.ADNM" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Base.Theme.ADNM" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Main Colors (Dark) -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/onPrimary</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/onSecondary</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/onSurface</item>
 
-        <item name="colorSecondary">@color/green</item>
-        <item name="colorPrimary">@color/green</item>
-        <item name="colorPrimaryVariant">@color/green</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorOnSecondary">@color/white</item>
-
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:statusBarColor">@color/green</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
     </style>
 
-    <style name="dialog" parent="Theme.Material3.Light.Dialog.Alert">
-        <item name="android:windowBackground">@drawable/shape_dialog</item>
+    <style name="dialog" parent="Theme.Material3.Dark.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/shape_dialog_modern</item>
         <item name="android:windowMinWidthMinor">90%</item>
-        <item name="colorPrimary">@color/green</item>
-        <item name="colorSecondary">@color/green</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorSecondary">@color/secondary</item>
+    </style>
+    <style name="Theme.ADNM" parent="Base.Theme.ADNM" />
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Material3.Dark.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>

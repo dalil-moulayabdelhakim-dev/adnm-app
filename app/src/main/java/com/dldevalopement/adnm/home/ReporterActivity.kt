@@ -38,6 +38,7 @@ import com.dldevalopement.adnm.home.reporter.RecyclerInterface
 import com.dldevalopement.adnm.home.reporter.Report
 import com.dldevalopement.adnm.home.reporter.dialog.ReportInfoDialog
 import com.dldevalopement.adnm.home.reporter.ReportsAdapter
+import com.dldevalopement.adnm.manager.AdManager
 import com.dldevalopement.adnm.manager.AuthManager
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -70,6 +71,12 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Initialize AdMob
+        AdManager.initialize(this)
+        // Create and add the banner ad to the container
+        val adView = AdManager.createBannerAd(this)
+        binding.adContainer.addView(adView)
 
 
         // Request necessary permissions (e.g., notifications and location) from the user
@@ -214,6 +221,16 @@ class ReporterActivity : AppCompatActivity(), AddReportDialogFragment.ReportStat
 
                         // 🔄 Update the RecyclerView adapter with the new data
                         reportsAdapter.updateReports(sortedReports, highlightId)
+
+                        // 📈 Calculate and show statistics
+                        val totalReports = sortedReports.size
+                        var totalEarned = 0.0
+                        for (report in sortedReports) {
+                            totalEarned += report.totalPrice ?: 0.0
+                        }
+                        
+                        binding.totalReportsTv.text = totalReports.toString()
+                        binding.totalEarnedTv.text = String.format(Locale.getDefault(), "%.2f DA", totalEarned)
                         
                         // Show/Hide empty state
                         if (reports.isEmpty()) {

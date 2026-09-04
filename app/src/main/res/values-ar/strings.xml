@@ -231,5 +231,6 @@
     <string name="empty_placeholder">---</string>
     <string name="label_placeholder">العنوان</string>
     <string name="value_placeholder">القيمة</string>
+    <string name="locate">تحديد</string>
 
 </resources>

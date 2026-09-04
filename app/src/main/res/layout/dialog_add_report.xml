@@ -2,64 +2,58 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/surface">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="24dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
-
-            <View
-                android:layout_width="4dp"
-                android:layout_height="18dp"
-                android:background="@color/green" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/select_waste_types"
-                android:textColor="#212121"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:text="@string/select_waste_types"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/onSurface"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="0dp"
             app:strokeWidth="1dp"
-            app:strokeColor="#E0E0E0">
+            app:strokeColor="@color/surfaceVariant"
+            app:cardBackgroundColor="@color/background">
 
             <LinearLayout
                 android:id="@+id/checkboxContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="8dp"
-                android:background="#FAFAFA" />
+                android:padding="12dp" />
         </com.google.android.material.card.MaterialCardView>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/verify_location"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/onSurface"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:cardCornerRadius="12dp"
+            android:layout_height="220dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="0dp"
             app:strokeWidth="1dp"
-            app:strokeColor="#E0E0E0">
+            app:strokeColor="@color/surfaceVariant">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -75,44 +69,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
-                    android:layout_margin="12dp"
+                    android:layout_margin="16dp"
                     android:src="@drawable/ic_location"
                     app:fabSize="mini"
-                    app:tint="@color/white"
+                    app:backgroundTint="@color/primary"
+                    app:tint="@color/onPrimary"
                     android:contentDescription="@string/refresh_location" />
             </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/verify_location"
-            android:textColor="@color/green"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:textStyle="italic"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/recaptcha_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="#F9F9F9"
+            android:layout_marginTop="24dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
             app:strokeWidth="1dp"
-            app:strokeColor="#D1D1D1">
+            app:strokeColor="@color/surfaceVariant"
+            app:cardBackgroundColor="@color/background">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="74dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="12dp">
+                android:padding="12dp">
 
                 <FrameLayout
                     android:layout_width="wrap_content"
@@ -120,66 +102,41 @@
 
                     <CheckBox
                         android:id="@+id/recaptcha_checkbox"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <ProgressBar
                         android:id="@+id/recaptcha_progressbar"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:visibility="gone"
-                        android:indeterminateTint="#4A90E2" />
+                        android:layout_gravity="center" />
 
                     <ImageView
                         android:id="@+id/error_ic"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/ic_error"
-                        app:tint="#D32F2F"
-                        android:visibility="gone" />
+                        app:tint="@color/error"
+                        android:visibility="gone"
+                        android:layout_gravity="center" />
                 </FrameLayout>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="14dp"
+                    android:layout_marginStart="12dp"
                     android:text="@string/i_m_not_a_robot"
-                    android:textColor="#525252"
-                    android:textSize="14sp" />
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_recaptcha" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/recaptcha"
-                        android:textColor="#525252"
-                        android:textSize="8sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/privacy_terms"
-                        android:textColor="#525252"
-                        android:textSize="7sp" />
-                </LinearLayout>
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_recaptcha" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

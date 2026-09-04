@@ -6,13 +6,28 @@
     android:layout_height="wrap_content"
     android:background="@drawable/shape_dialog_modern"
     android:clipToPadding="false"
-    android:padding="20dp">
+    android:paddingStart="20dp"
+    android:paddingTop="20dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="80dp">
+
+    <!-- Drag Handle -->
+    <View
+        android:id="@+id/dragHandle"
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_marginBottom="16dp"
+        android:background="#D3D3D3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Fixed Header -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         tools:text="Report #104"
         android:textColor="@color/text_dark"
         android:textSize="22sp"
@@ -187,7 +202,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Row 1: Drive and Call -->
+        <!-- Row 1: Drive, Locate and Call -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -199,13 +214,32 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="54dp"
-                android:layout_marginEnd="6dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:text="@string/drive"
                 android:textAllCaps="false"
                 android:textColor="@color/blue_drive"
+                android:textSize="12sp"
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_location"
+                app:iconSize="18dp"
+                app:iconTint="@color/blue_drive"
+                app:strokeColor="@color/blue_drive" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLocate"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_weight="1"
+                android:text="@string/locate"
+                android:textAllCaps="false"
+                android:textColor="@color/blue_drive"
+                android:textSize="12sp"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_location"
+                app:iconSize="18dp"
                 app:iconTint="@color/blue_drive"
                 app:strokeColor="@color/blue_drive" />
 
@@ -214,13 +248,15 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="54dp"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="4dp"
                 android:layout_weight="1"
                 android:text="@string/call"
                 android:textAllCaps="false"
                 android:textColor="@color/primary_green"
+                android:textSize="12sp"
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_phone"
+                app:iconSize="18dp"
                 app:iconTint="@color/primary_green"
                 app:strokeColor="@color/primary_green" />
         </LinearLayout>

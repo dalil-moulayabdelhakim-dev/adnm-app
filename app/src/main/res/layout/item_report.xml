@@ -6,11 +6,11 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="12dp"
     android:layout_marginVertical="6dp"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
     app:strokeWidth="1dp"
-    app:strokeColor="#EAEAEA"
-    app:cardBackgroundColor="@color/white">
+    app:strokeColor="@color/surfaceVariant"
+    app:cardBackgroundColor="@color/surface">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,20 +19,36 @@
         android:padding="16dp"
         android:gravity="center_vertical">
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/primaryContainer">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_trash"
+                app:tint="@color/primary" />
+        </com.google.android.material.card.MaterialCardView>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
 
             <TextView
                 android:id="@+id/txtTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="0.00 DA"
-                android:textSize="16sp"
+                tools:text="1,250.00 DA"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                 android:textStyle="bold"
-                android:textColor="#212121" />
+                android:textColor="@color/onSurface" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -42,19 +58,19 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
                     android:src="@drawable/ic_calendar"
-                    app:tint="#9E9E9E" />
+                    app:tint="@color/onSurfaceVariant" />
 
                 <TextView
                     android:id="@+id/txtCreatedAt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    tools:text="2024-05-20"
-                    android:textSize="12sp"
-                    android:textColor="#9E9E9E" />
+                    tools:text="May 20, 2024"
+                    android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                    android:textColor="@color/onSurfaceVariant" />
             </LinearLayout>
         </LinearLayout>
 
@@ -62,15 +78,14 @@
             android:id="@+id/txtStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Status"
-            android:textSize="11sp"
+            tools:text="Pending"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
             android:textStyle="bold"
-            android:textColor="@color/green"
+            android:textColor="@color/primary"
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
-            android:background="@drawable/bg_rounded_border_light"
-            android:textAllCaps="true"
-            android:letterSpacing="0.05" />
+            android:background="@drawable/bg_status_badge"
+            android:textAllCaps="true" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

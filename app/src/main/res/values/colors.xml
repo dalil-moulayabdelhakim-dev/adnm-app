@@ -3,7 +3,32 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Design Palette -->
+    <!-- Modern Material 3 Palette -->
+    <color name="primary">#2E7D32</color>
+    <color name="onPrimary">#FFFFFF</color>
+    <color name="primaryContainer">#C8E6C9</color>
+    <color name="onPrimaryContainer">#003300</color>
+
+    <color name="secondary">#43A047</color>
+    <color name="onSecondary">#FFFFFF</color>
+    <color name="secondaryContainer">#E8F5E9</color>
+    <color name="onSecondaryContainer">#1B5E20</color>
+
+    <color name="tertiary">#2563EB</color>
+    <color name="onTertiary">#FFFFFF</color>
+
+    <color name="error">#B00020</color>
+    <color name="onError">#FFFFFF</color>
+
+    <color name="background">#F8FAF8</color>
+    <color name="onBackground">#1B1C1B</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="onSurface">#1B1C1B</color>
+    <color name="surfaceVariant">#E1E3E1</color>
+    <color name="onSurfaceVariant">#444744</color>
+    <color name="outline">#747775</color>
+
+    <!-- Legacy / Project Mappings -->
     <color name="primary_green">#2E7D32</color>
     <color name="accent_green">#43A047</color>
     <color name="blue_drive">#2563EB</color>
@@ -13,10 +38,9 @@
     <color name="text_muted">#6B7280</color>
     <color name="border_color">#E5E7EB</color>
 
-    <!-- Legacy / Project Mappings -->
     <color name="red">#AB2727</color>
     <color name="green">#2E7D32</color>
-    <color name="lightGreen">#DCEDC8</color>
-    <color name="darkGreen">#2E7D32</color>
+    <color name="lightGreen">#F1F8E9</color>
+    <color name="darkGreen">#1B5E20</color>
     <color name="divider_color">#E5E7EB</color>
 </resources>
